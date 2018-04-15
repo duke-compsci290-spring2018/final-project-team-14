@@ -4,6 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var morgan = require('morgan');
+var passport = require('passport');
+var config = require('./config/database');
+const mongoose = require('mongoose');
+mongoose.connect(config.database);
+
+var api = require('./routes/api');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -42,5 +49,13 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.use(passport.initialize());
 
 module.exports = app;
