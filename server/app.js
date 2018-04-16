@@ -37,6 +37,7 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
+var local = require('./config/local');
 var facebook = require('./config/facebook');
 
 // view engine setup
