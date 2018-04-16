@@ -10,7 +10,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/good', function(req, res, next) {
-  res.render('index', { title: 'Good' });
+  res.render('index', { title: req.user.name });
 });
 
 module.exports = router;

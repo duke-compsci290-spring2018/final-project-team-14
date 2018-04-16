@@ -6,11 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var passport = require('passport');
+var session = require('express-session')
 var config = require('./config/database');
-//const mongoose = require('mongoose');
-//mongoose.connect(config.database);
+const mongoose = require('mongoose');
+mongoose.connect(config.database);
 
-var facebook = require('./config/facebook');
+var User = require("./models/user");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -19,12 +20,31 @@ var auth = require('./routes/auth');
 
 var app = express();
 
+// user authentication and session
+app.use(session({resave: false, saveUninitialized: true, secret: 'secret', cookie: { maxAge: 60000 }}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// used to serialize the user for the session
+passport.serializeUser(function(user, done) {
+    done(null, user.id); 
+});
+
+// used to deserialize the user
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
+var facebook = require('./config/facebook');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -56,10 +76,9 @@ app.use(function(err, req, res, next) {
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
+    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
     next();
 });
-
-app.use(passport.initialize());
 
 module.exports = app;

@@ -20,6 +20,8 @@
     "passport-twitter": "",
     "passport-google-oauth": "",
     "bcrypt-nodejs": "",
-    "jsonwebtoken": ""
+    "jsonwebtoken": "",
+    "express-session": "",
+    "bcrypt": ""
   }
 }
