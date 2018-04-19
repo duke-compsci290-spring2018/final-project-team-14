@@ -3,8 +3,9 @@ extends layout
 block content
 	h1= title
 	p Welcome to #{title}
-	<a href="/auth/facebook">Login with Facebook</a>  
-	<form action="/auth/" method="post">
+	<a href="/auth/facebook">Login with Facebook</a> 
+	<a href='/signup'>sign up</a> 
+	<form action="/auth" method="post">
 		<label>Username</label><input type="text" name="username"/><br/>
 		<label>Password</label><input type="text" name="password"/><br/><br/>
 		<input type="submit" value="Submit"/>

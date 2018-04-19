@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var User = require('../models/user');
+
 function isAuthenticated(req, res, next) {
 	if(req.isAuthenticated()){
 		next();
@@ -25,6 +27,28 @@ router.get('/logout', isAuthenticated, function(req, res, next) {
 	req.session.destroy(function (err) {
 		res.redirect('/');
 	});
+});
+
+router.post('/signup', function(req, res, next) {
+	var newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
+        name: req.body.name,
+        facebook_id: req.body.facebook_id
+    });
+    newUser.save(function(err) {
+        if (err) {
+            console.log(err);
+            res.render('index', { title: 'fail' });
+        } else {
+        	console.log("finished");
+        	res.render('index', { title: 'success' });
+        }
+    });
+});
+
+router.get('/signup', function(req, res, next) {
+	res.render('signup', { title: 'Express' });
 });
 
 module.exports = router;

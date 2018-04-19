@@ -14,7 +14,7 @@ passport.use(new LocalStrategy(
             }
             user.comparePassword(password, function(err, isMatch) {
                 if (err) throw err;
-                console.log(password, isMatch);
+                //console.log(password, isMatch);
                 if(!isMatch){
                     return done(null, false);
                 }
