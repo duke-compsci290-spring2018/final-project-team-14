@@ -31,6 +31,10 @@ export default {
   	Education, 
   	Skills, 
   	Accomplishments
+  },
+
+  methods: {
+
   }
 }
 </script>
