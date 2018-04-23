@@ -4,9 +4,9 @@
       <a class="navbar-brand col-md-5 col-5" href="#">
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Duke_Athletics_logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
       </a>
-      <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Username" v-model="userName">
-        <input class="form-control mr-sm-2" type="search" placeholder="Password" v-model="password">
+      <form class="form-inline" v-on:submit.prevent="logIn">
+        <input class="form-control mr-sm-2" type="search" placeholder="Username" v-model="userName" required>
+        <input class="form-control mr-sm-2" type="search" placeholder="Password" v-model="password" required>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign In</button>
       </form>
     </nav>
@@ -17,24 +17,24 @@
           <h5>Get started - its free</h5>
         </div>
         <div class="card-body">
-          <form>
+          <form v-on:submit.prevent="signUp">
             <div class="form-group">
               <label for="firstName">First Name</label>
-              <input type="text" class="form-control" id="firstName" v-model="firstName">
+              <input type="text" class="form-control" id="firstName" v-model="firstName" required>
             </div>
             <div class="form-group">
               <label for="lastName">Last Name</label>
-              <input type="text" class="form-control" id="lastName" v-model="lastName">
+              <input type="text" class="form-control" id="lastName" v-model="lastName" required>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" v-model="email">
+              <input type="email" class="form-control" id="email" v-model="email" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" v-model="signIn_password">
+              <input type="password" class="form-control" id="password" v-model="signIn_password" required>
             </div>
-            <button class="btn btn-primary" v-on:click="signUp">Join Now</button>
+            <button class="btn btn-primary">Join Now</button>
           </form>
         </div>
      </div>
@@ -65,6 +65,9 @@ export default {
     }
   },
   methods:{
+    logIn: function(){
+
+    },
     signUp: function(){
 
     }
