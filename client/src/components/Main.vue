@@ -1,15 +1,16 @@
+
 <template>
   <div >
+    <MainNav/>
   </div>
 </template>
 
 <script>
+import MainNav from "./MainNav.vue"
 export default {
   name: 'Main',
-  data () {
-    return {
-      
-    }
+  components:{
+    MainNav
   }
 }
 </script>

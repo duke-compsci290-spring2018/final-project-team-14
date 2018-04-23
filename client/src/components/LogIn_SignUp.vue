@@ -74,16 +74,14 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .body{
-  position: relative;
   height: 85vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../assets/signIn.jpg");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
+  position: relative;
 }
 .card{
   position: absolute;
