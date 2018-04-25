@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="main">
 		<h1>Profile</h1>
 		<Summary></Summary>
 		<Experience></Experience>
@@ -40,4 +40,7 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+	text-align: center;
+}
 </style>
