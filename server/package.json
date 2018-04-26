@@ -23,6 +23,7 @@
     "jsonwebtoken": "",
     "express-session": "",
     "bcrypt": "",
-    "socket.io": ""
+    "socket.io": "",
+    "cors": ""
   }
 }

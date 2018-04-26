@@ -12,6 +12,7 @@ socketIO.on('connection', function (socket) {
 	var splited = url.split('/');
 	var roomID = splited[splited.length - 1];
 	// 获取房间ID
+	/*
 	var user = '';
 	socket.on('join', function (userName) {
 		user = userName; // 将用户昵称加入房间名单中
@@ -41,6 +42,7 @@ socketIO.on('connection', function (socket) {
 		}
 		socketIO.to(roomID).emit('msg', user, msg);
 	});
+	*/
 }); // room page
 router.get('/room/:roomID', function (req, res) {
 	var roomID = req.params.roomID; // 渲染页面数据(见views/room.hbs)

@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var passport = require('passport');
 var session = require('express-session')
+var cors = require('cors')
 var config = require('./config/database');
 const mongoose = require('mongoose');
 mongoose.connect(config.database);
@@ -19,6 +20,49 @@ var api = require('./routes/api');
 var auth = require('./routes/auth');
 
 var app = express();
+/*
+var whitelist = [
+    'http://127.0.0.1:8080',
+    'http://localhost:8080'
+];
+var corsOptions = {
+    origin: function(origin, callback){
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+    },
+    credentials: true
+};
+app.use(cors(corsOptions));
+*/
+
+
+
+app.use(cors({
+    origin:['http://localhost:8080'],
+    methods:['GET','POST', 'OPTIONS'],
+    alloweHeaders:['Content-Type', 'Authorization'],
+    credentials: true
+}));
+
+
+
+// set up socket io
+var server = app.listen(3000);
+
+var io = require('socket.io').listen(server);
+
+app.get('/chat', function(req, res){
+    res.sendFile(__dirname + '/views/chat.html');
+});
+
+io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+        console.log(msg);
+        io.emit('chat message', msg);
+    });
+});
+
+
 
 // user authentication and session
 app.use(session({resave: false, saveUninitialized: true, secret: 'secret', cookie: { maxAge: 60000 }}));
@@ -74,12 +118,13 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
+/*
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
-    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8080, http://localhost:8080");
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept, X-Requested-With");
     next();
 });
-
+*/
 module.exports = app;

@@ -16,11 +16,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-	res.render('index', { title: 'Login' });
+    res.send("err");
 });
 
-router.get('/good', isAuthenticated, function(req, res, next) {
-	res.render('main', { title: req.user.name });
+router.get('/good', function(req, res, next) {
+    res.send("good");
 });
 
 router.get('/logout', isAuthenticated, function(req, res, next) {
@@ -31,18 +31,21 @@ router.get('/logout', isAuthenticated, function(req, res, next) {
 
 router.post('/signup', function(req, res, next) {
 	var newUser = new User({
-        username: req.body.username,
+        username: req.body.email,
         password: req.body.password,
-        name: req.body.name,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         facebook_id: req.body.facebook_id
     });
     newUser.save(function(err) {
         if (err) {
             console.log(err);
-            res.render('index', { title: 'fail' });
+            res.send("err");
+            //res.render('index', { title: 'fail' });
         } else {
         	console.log("finished");
-        	res.render('index', { title: 'success' });
+            res.send("good");
+        	//res.render('index', { title: 'success' });
         }
     });
 });
