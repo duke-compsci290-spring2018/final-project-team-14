@@ -1,14 +1,19 @@
 <template>
-    <Test/>   
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import Test from './components/Test'
-
 export default {
-    name: "app",
-    components: {
-        Test
-    }
+  name: 'App'
 }
 </script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+</style>

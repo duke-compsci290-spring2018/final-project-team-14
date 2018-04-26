@@ -1,0 +1,94 @@
+<template>
+  <div>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand col-md-5 col-5" href="#">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Duke_Athletics_logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+      </a>
+      <form class="form-inline" v-on:submit.prevent="logIn">
+        <input class="form-control mr-sm-2" type="search" placeholder="Username" v-model="userName" required>
+        <input class="form-control mr-sm-2" type="search" placeholder="Password" v-model="password" required>
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign In</button>
+      </form>
+    </nav>
+    <div class="body">
+      <div class="card text-center">
+        <div class="card-header">
+          <h3>Be Great at What You Do</h3>
+          <h5>Get started - its free</h5>
+        </div>
+        <div class="card-body">
+          <form v-on:submit.prevent="signUp">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" class="form-control" id="firstName" v-model="firstName" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" id="lastName" v-model="lastName" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" v-model="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" v-model="signIn_password" required>
+            </div>
+            <button class="btn btn-primary">Join Now</button>
+          </form>
+        </div>
+     </div>
+    </div>
+    <footer class="container">
+      <div class="row">
+        <div class="col-12 contact d-flex justify-content-center">
+          <a class="btn btn-social-icon btn-google-linkedin big-icon" href="https://www.linkedin.com/in/yifeng-liu-364ab280/"><span class="fa fa-linkedin fa-3x"></span></a>
+          <a class="btn btn-social-icon btn-github big-icon" href="https://github.com/two-for-five"><span class="fa fa-github fa-3x"></span></a>
+          <a class = "btn btn-social-icon big-icon" href="mailto:yl487@duke.edu"><span class="fa fa-envelope fa-3x"></span></a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'LogIn_SignUp',
+  data () {
+    return {
+      userName: null,
+      password: null,
+      firstName: null,
+      lastName: null,
+      email: null,
+      signIn_password:null
+    }
+  },
+  methods:{
+    logIn: function(){
+
+    },
+    signUp: function(){
+
+    }
+  }
+}
+</script>
+<style scoped>
+.body{
+  height: 85vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../assets/signIn.jpg");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.card{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 510px;
+  transform: translate(-50%, -50%);
+}
+</style>
