@@ -30,8 +30,9 @@ router.get('/logout', isAuthenticated, function(req, res, next) {
 });
 
 router.post('/signup', function(req, res, next) {
+	console.log(req.body.password);
 	var newUser = new User({
-        username: req.body.email,
+        username: req.body.username,
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
