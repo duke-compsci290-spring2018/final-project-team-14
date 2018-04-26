@@ -24,8 +24,12 @@ export default {
   name: 'Main',
   data(){
     return{
+      id: this.$route.params.id,
       jobs: data
     }
+  },
+  created(){
+
   },
   components:{
     MainNav,
@@ -33,7 +37,7 @@ export default {
   },
   methods:{
     search: function(){
-      
+
     }
   }
 }
