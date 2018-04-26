@@ -16,11 +16,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-    res.send("err");
+    res.send(JSON.stringify({ success: false }));
 });
 
 router.get('/good', function(req, res, next) {
-    res.send("good");
+    res.send(JSON.stringify({ success: true }));
 });
 
 router.get('/logout', isAuthenticated, function(req, res, next) {
@@ -41,12 +41,10 @@ router.post('/signup', function(req, res, next) {
     newUser.save(function(err) {
         if (err) {
             console.log(err);
-            res.send("err");
-            //res.render('index', { title: 'fail' });
+            res.send(JSON.stringify({ success: false }));
         } else {
         	console.log("finished");
-            res.send("good");
-        	//res.render('index', { title: 'success' });
+            res.send(JSON.stringify({ success: true }));
         }
     });
 });
