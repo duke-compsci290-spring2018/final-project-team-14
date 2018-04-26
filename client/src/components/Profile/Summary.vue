@@ -21,7 +21,7 @@
 var summary = {
 	"avatar": require("../../assets/kedaya.png"),
 	"name": "Stefen",
-	"identity": "MS Student in Computer Science at Duke Uinversity",
+	"identity": "MS Student in Computer Science at Duke University",
 	"school": "Duke University",
 	"company": "",
 	"position": "Durham, NC, USA"
