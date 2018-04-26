@@ -19,13 +19,32 @@
 import MainNav from "./MainNav.vue";
 import Job from "./Job.vue";
 import data from "../JSON/data.json"
-
+import axios from 'axios';
+axios.defaults.withCredentials=true;
 export default {
   name: 'Main',
   data(){
     return{
+      firstName: null,
+      lastName: null,
       jobs: data
     }
+  },
+  created(){
+    axios('http://127.0.0.1:8081/main', {
+      method: "get",
+      withCredentials: true
+    })
+    .then(response =>{
+      // if the cookie has the correct user info, then direct route to main page
+
+      if (!response["data"]["success"]){
+        this.$router.push({ path: `/`});
+      }
+    })
+    .catch(e => {
+      this.errors.push(e);
+    });
   },
   components:{
     MainNav,
@@ -33,7 +52,7 @@ export default {
   },
   methods:{
     search: function(){
-      
+
     }
   }
 }

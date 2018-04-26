@@ -5,8 +5,8 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Duke_Athletics_logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
       </a>
       <form class="form-inline" v-on:submit.prevent="logIn">
-        <input class="form-control mr-sm-2" type="search" placeholder="Username" v-model="userName" required>
-        <input class="form-control mr-sm-2" type="search" placeholder="Password" v-model="password" required>
+        <input class="form-control mr-sm-2" type="email" placeholder="Username" v-model="userName" required>
+        <input class="form-control mr-sm-2" type="password" placeholder="Password" v-model="password" required>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign In</button>
       </form>
     </nav>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+axios.defaults.withCredentials=true;
 export default {
   name: 'LogIn_SignUp',
   data () {
@@ -64,12 +66,56 @@ export default {
       signIn_password:null
     }
   },
+  created(){
+  },
   methods:{
     logIn: function(){
-
+      axios('http://127.0.0.1:8081/auth', {
+        method: "post",
+        data: { username: this.userName, password: this.password }
+      })
+      .then(response => {
+        console.log(response);
+        if (response["data"]["success"]){
+          this.$router.push({ path: `/main`});
+        }
+        else{
+          this.userName = "";
+          this.password = "";
+          alert("Username or password is not correct.");
+        }
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
     },
     signUp: function(){
-
+      console.log(this.signIn_password);
+      axios('http://127.0.0.1:8081/signup', {
+        method: "post",
+        data:{
+          username: this.email,
+          password: this.signIn_password,
+          firstName: this.firstName,
+          lastName: this.lastName
+        }
+      })
+      .then(response =>{
+        console.log(response);
+        if (response["data"]["success"]){
+          this.$router.push({ path: `/main`});
+        }
+        else{
+          this.email = "";
+          this.signIn_password = "";
+          this.firstName = "";
+          this.lastName = "";
+          alert("Email has been registered.");
+        }
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
     }
   }
 }

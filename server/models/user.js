@@ -12,8 +12,14 @@ const UserSchema = new Schema({
         type: String,
         require: true
     },
-    name: {
+    firstName: {
         type: String
+    },
+    lastName: {
+        type: String
+    },
+    isEmployer: {
+        type: Boolean
     },
     facebook_id: {
         type: String
