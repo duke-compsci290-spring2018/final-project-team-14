@@ -53,6 +53,7 @@
 
 <script>
 import axios from 'axios';
+axios.defaults.withCredentials=true;
 export default {
   name: 'LogIn_SignUp',
   data () {
@@ -64,6 +65,16 @@ export default {
       email: null,
       signIn_password:null
     }
+  },
+  created(){
+    // server check cookies 
+    axios('http://127.0.0.1:8081/main', {
+      method: "get",
+      withCredentials: true
+    })
+    .catch(e => {
+      this.errors.push(e);
+    });
   },
   methods:{
     logIn: function(){

@@ -71,7 +71,7 @@ app.use(passport.session());
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
-    done(null, user.id); 
+    done(null, user.id);
 });
 
 // used to deserialize the user
@@ -118,13 +118,12 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-/*
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8080, http://localhost:8080");
-    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept, X-Requested-With");
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
 });
-*/
 module.exports = app;
