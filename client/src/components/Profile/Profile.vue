@@ -15,6 +15,7 @@ import Experience from './Experience.vue'
 import Education from './Education.vue'
 import Skills from './Skills.vue'
 import Accomplishments from './Accomplishments.vue'
+import data from '../../user.json'
 
 export default {
   name: 'Profile',
