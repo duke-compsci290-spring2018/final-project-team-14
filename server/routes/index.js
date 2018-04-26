@@ -52,4 +52,9 @@ router.get('/signup', function(req, res, next) {
 	res.render('signup', { title: 'Express' });
 });
 
+router.get('/main', function(req, res, next) {
+    console.log(req.user);
+    console.log(req.session);
+});
+
 module.exports = router;

@@ -3,9 +3,10 @@ extends layout
 block content
 	p Welcome #{title}
 	<form action="/signup" method='post'>
-		<label>Username</label><input type="text" name="username"/><br/>
+		<label>Username</label><input type="text" name="email"/><br/>
 		<label>Password</label><input type="password" name="password"/><br/>
-		<label>Name</label><input type="text" name="name"/><br/>
+		<label>Name</label><input type="text" name="firstName"/><br/>
+		<label>Name</label><input type="text" name="lastName"/><br/>
 		<input type="submit" value="submit"/>
 	</form>
 	<a href='/signup'>sign up</a>
