@@ -37,7 +37,6 @@ export default {
     })
     .then(response =>{
       // if the cookie has the correct user info, then direct route to main page
-
       if (!response["data"]["success"]){
         this.$router.push({ path: `/`});
       }
