@@ -67,14 +67,6 @@ export default {
     }
   },
   created(){
-    // server check cookies 
-    axios('http://127.0.0.1:8081/main', {
-      method: "get",
-      withCredentials: true
-    })
-    .catch(e => {
-      this.errors.push(e);
-    });
   },
   methods:{
     logIn: function(){
@@ -84,6 +76,14 @@ export default {
       })
       .then(response => {
         console.log(response);
+        if (response["data"]["success"]){
+          this.$router.push({ path: `/main`});
+        }
+        else{
+          this.userName = "";
+          this.password = "";
+          alert("Username or password is not correct.");
+        }
       })
       .catch(e => {
         this.errors.push(e);
@@ -102,6 +102,16 @@ export default {
       })
       .then(response =>{
         console.log(response);
+        if (response["data"]["success"]){
+          this.$router.push({ path: `/main`});
+        }
+        else{
+          this.email = "";
+          this.signIn_password = "";
+          this.firstName = "";
+          this.lastName = "";
+          alert("Email has been registered.");
+        }
       })
       .catch(e => {
         this.errors.push(e);

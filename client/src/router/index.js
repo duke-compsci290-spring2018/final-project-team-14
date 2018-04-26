@@ -13,7 +13,7 @@ export default new Router({
       component: LogIn_SignUp
     },
     {
-      path: '/:id',
+      path: '/main',
       name: 'Main',
       component: Main
     },
