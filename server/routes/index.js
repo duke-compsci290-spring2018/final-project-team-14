@@ -78,14 +78,23 @@ router.get("/search", function(req, res, next) {
     let url = 'https://jobs.github.com/positions.json';
     let position = req.query.position;
     let location = req.query.location;
+		if(position) {
+        position = position.replace(' ', '+');
+    }
+    if(location) {
+        location = location.replace(' ', '+');
+    }
     if (position || location) {
         url += '?';
     }
     if(position) {
-        url += position;
+        url += 'position='+position;
+    }
+    if(position && location) {
+        url += '&';
     }
     if(location) {
-        url += location;
+        url += 'location='+location;
     }
     https.get(url, (response) => {
         let data = '';
