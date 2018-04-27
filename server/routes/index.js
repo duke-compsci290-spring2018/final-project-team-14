@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var https = require('https');
+
 var User = require('../models/user');
 
 function isAuthenticated(req, res, next) {
@@ -52,15 +54,44 @@ router.get('/signup', function(req, res, next) {
 	res.render('signup', { title: 'Express' });
 });
 
-router.get('/main', isAuthenticated, function(req, res, next) {
+router.get('/profile', isAuthenticated, function(req, res, next) {
+    ret = {};
 	if (req.user){
-		res.send(JSON.stringify({ success: true }));
+        User.findOne({username: req.user.username}, function(err, user) {
+            if(err || !user) {
+                ret.success = false;
+            }else{
+                ret.success = true;
+                ret.data = user;
+            }
+        });
 	}
 	else{
-		res.send(JSON.stringify({ success: false }));
+        ret.success = false;
 	}
-    console.log(req.user);
-    console.log(req.session);
+    res.send(JSON.stringify(ret));
+});
+
+router.get("/search", function(req, res, next) {
+    //'https://jobs.github.com/positions.json?description=python&location=new+york'
+    let url = 'https://jobs.github.com/positions.json';
+    let position = req.params['position'];
+    let location = req.params['location'];
+    console.log(position);
+    console.log(location);
+    /*
+    https.get(url, (response) => {
+        let data = '';
+        response.on('data', (chunk) => {
+            data += chunk;
+        });
+        response.on('end', () => {
+            res.send(data);
+        });
+    }).on("error", (err) => {
+        console.log("Error: " + err.message);
+    });
+    */
 });
 
 module.exports = router;
