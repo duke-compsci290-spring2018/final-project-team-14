@@ -8,7 +8,7 @@
       <button type="submit" class="btn btn-outline-light ml-2">Search</button>
     </form>
     <ul>
-      <li v-for="job in jobs" class="mr-3 mt-3">
+      <li v-for="(job, index) in jobs" :key= "job.id" class="mr-3 mt-3">
         <Job :job="job" />
       </li>
     </ul>
@@ -59,10 +59,11 @@ export default {
         params: { position: this.search_position, location: this.search_location}
       })
       .then(response =>{
+        this.jobs = [];
         this.jobs = response["data"];
-        console.log(response);
+        console.log(this.jobs);
         this.search_position = "";
-        this.serach_location = "";
+        this.search_location = "";
       })
       .catch(e => {
         this.errors.push(e);

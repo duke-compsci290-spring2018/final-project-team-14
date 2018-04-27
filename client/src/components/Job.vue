@@ -21,6 +21,9 @@ export default {
       info: this.job
     }
   },
+  created(){
+    console.log(this.job);
+  },
   methods:{
   }
 }
