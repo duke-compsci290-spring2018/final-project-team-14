@@ -64,12 +64,13 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                 ret.success = true;
                 ret.data = user;
             }
+            res.send(JSON.stringify(ret));
         });
 	}
 	else{
         ret.success = false;
+        res.send(JSON.stringify(ret));
 	}
-    res.send(JSON.stringify(ret));
 });
 
 router.get("/search", function(req, res, next) {
