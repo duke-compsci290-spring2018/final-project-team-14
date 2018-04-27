@@ -9,12 +9,13 @@
         <input class="form-control mr-sm-2" type="password" placeholder="Password" v-model="password" required>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign In</button>
       </form>
+      <router-link role ="button" class="nav-item nav-link btn btn-outline-success" :to="{ path: 'adminLogin' }">Administrator</router-link>
     </nav>
     <div class="body">
       <div class="card text-center">
         <div class="card-header">
-          <h3>Be Great at What You Do</h3>
-          <h5>Get started - its free</h5>
+          <h4>Be Great at What You Do</h4>
+          <h6>Get started - its free</h6>
         </div>
         <div class="card-body">
           <form v-on:submit.prevent="signUp">
@@ -33,6 +34,12 @@
             <div class="form-group">
               <label for="password">Password</label>
               <input type="password" class="form-control" id="password" v-model="signIn_password" required>
+            </div>
+            <div class="form-group">
+              <select class="custom-select" required v-model="category">
+                <option value="1">Employee</option>
+                <option value="2">Employer</option>
+              </select>
             </div>
             <button class="btn btn-primary">Join Now</button>
           </form>
@@ -62,6 +69,7 @@ export default {
       password: null,
       firstName: null,
       lastName: null,
+      category: null,
       email: null,
       signIn_password:null
     }
@@ -97,7 +105,8 @@ export default {
           username: this.email,
           password: this.signIn_password,
           firstName: this.firstName,
-          lastName: this.lastName
+          lastName: this.lastName,
+          category: this.category
         }
       })
       .then(response =>{
@@ -134,7 +143,7 @@ export default {
   top: 50%;
   left: 50%;
   width: 400px;
-  height: 510px;
+  height: 560px;
   transform: translate(-50%, -50%);
 }
 </style>

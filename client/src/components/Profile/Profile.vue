@@ -5,7 +5,7 @@
 		<Experience></Experience>
 		<Education></Education>
 		<Skills></Skills>
-		<Accomplishments></Accomplishments>		
+		<Accomplishments></Accomplishments>
 	</div>
 </template>
 
@@ -15,22 +15,22 @@ import Experience from './Experience.vue'
 import Education from './Education.vue'
 import Skills from './Skills.vue'
 import Accomplishments from './Accomplishments.vue'
-import data from '../../user.json'
+
 
 export default {
   name: 'Profile',
-  
+
   data () {
     return {
-      
+
     }
   },
 
   components: {
-  	Summary, 
-  	Experience, 
-  	Education, 
-  	Skills, 
+  	Summary,
+  	Experience,
+  	Education,
+  	Skills,
   	Accomplishments
   },
 

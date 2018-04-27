@@ -8,8 +8,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="#">Jobs</a>
+        <a class="nav-item nav-link active" href="#">Home</a>
+        <a class="nav-item nav-link" href="#">Message</a>
         <a class="nav-item nav-link" href="#">Profile</a>
         <a class="nav-item nav-link" href="./">Sign Out</a>
       </div>

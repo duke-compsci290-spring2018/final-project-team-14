@@ -3,8 +3,8 @@
   <div >
     <MainNav/>
     <form class="form-inline d-flex justify-content-center" v-on:submit.prevent="search">
-      <input type="text" class="form-control col-4" placeholder="Search Jobs">
-      <input type="text" class="form-control col-4 ml-2" placeholder="Search Location">
+      <input type="text" class="form-control col-4" placeholder="Search Jobs" v-model="search_position">
+      <input type="text" class="form-control col-4 ml-2" placeholder="Search Location" v-model="search_location">
       <button type="submit" class="btn btn-outline-light ml-2">Search</button>
     </form>
     <ul>
@@ -18,8 +18,8 @@
 <script>
 import MainNav from "./MainNav.vue";
 import Job from "./Job.vue";
-import data from "../JSON/data.json"
 import axios from 'axios';
+import $ from 'jquery';
 axios.defaults.withCredentials=true;
 export default {
   name: 'Main',
@@ -27,16 +27,19 @@ export default {
     return{
       firstName: null,
       lastName: null,
-      jobs: data
+      jobs: null,
+      search_position: null,
+      search_location: null
     }
   },
   created(){
-    axios('http://127.0.0.1:8081/main', {
+    axios('http://127.0.0.1:8081/profile', {
       method: "get",
       withCredentials: true
     })
     .then(response =>{
       // if the cookie has the correct user info, then direct route to main page
+      console.log(response);
       if (!response["data"]["success"]){
         this.$router.push({ path: `/`});
       }
@@ -51,7 +54,19 @@ export default {
   },
   methods:{
     search: function(){
-
+      axios('http://127.0.0.1:8081/search', {
+        method: "get",
+        params: { position: this.search_position, location: this.search_location}
+      })
+      .then(response =>{
+        this.jobs = response["data"];
+        console.log(response);
+        this.search_position = "";
+        this.serach_location = "";
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
     }
   }
 }

@@ -1,13 +1,13 @@
 <template>
   <div class="card" style="width: 15rem;">
-    <img class="card-img-top" :src="info.img" alt="Card image cap" height="40">
+    <img class="card-img-top" :src="info.company_logo" alt="Company Logo" height="50" width="50">
     <div class="card-body">
-      <h5>{{info["Position"]}}</h5>
-      <h6>{{info["Name"]}}</h6>
-      <h6>{{info["Location"]}}</h6>
+      <h5>{{info["title"]}}</h5>
+      <h6>{{info["company"]}}</h6>
+      <h6>{{info["location"]}}</h6>
     </div>
     <div class="card-footer">
-      <button type="button" class="btn btn-primary"  v-on:click="apply">Apply</button>
+      <a role ="button" class="btn btn-primary" :href="info.url" target="_blank">Apply</a>
     </div>
   </div>
 </template>
@@ -22,9 +22,6 @@ export default {
     }
   },
   methods:{
-    apply: function(){
-
-    }
   }
 }
 </script>
