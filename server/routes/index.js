@@ -52,13 +52,13 @@ router.get('/signup', function(req, res, next) {
 	res.render('signup', { title: 'Express' });
 });
 
-router.get('/main', function(req, res, next) {
-		if (req.user){
-			res.send(JSON.stringify({ success: true }));
-		}
-		else{
-			res.send(JSON.stringify({ success: false }));
-		}
+router.get('/main', isAuthenticated, function(req, res, next) {
+	if (req.user){
+		res.send(JSON.stringify({ success: true }));
+	}
+	else{
+		res.send(JSON.stringify({ success: false }));
+	}
     console.log(req.user);
     console.log(req.session);
 });

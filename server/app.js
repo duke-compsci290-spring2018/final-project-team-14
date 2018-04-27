@@ -20,22 +20,6 @@ var api = require('./routes/api');
 var auth = require('./routes/auth');
 
 var app = express();
-/*
-var whitelist = [
-    'http://127.0.0.1:8080',
-    'http://localhost:8080'
-];
-var corsOptions = {
-    origin: function(origin, callback){
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-        callback(null, originIsWhitelisted);
-    },
-    credentials: true
-};
-app.use(cors(corsOptions));
-*/
-
-
 
 app.use(cors({
     origin:['http://localhost:8080'],
@@ -62,10 +46,14 @@ io.on('connection', function(socket){
     });
 });
 
-
-
 // user authentication and session
-app.use(session({resave: false, saveUninitialized: true, secret: 'secret', cookie: { maxAge: 60000 }}));
+app.use(session({
+    resave: false, 
+    saveUninitialized: true, 
+    secret: 'secret', 
+    cookie: {}
+    })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -122,7 +110,7 @@ app.use(function(err, req, res, next) {
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
 });
