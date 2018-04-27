@@ -32,12 +32,16 @@ router.get('/logout', isAuthenticated, function(req, res, next) {
 });
 
 router.post('/signup', function(req, res, next) {
+    var isEmployer = false;
+    if(req.body.category == 2){
+        isEmployer = true;
+    }
 	var newUser = new User({
         username: req.body.username,
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        isEmployer: req.body.category,
+        isEmployer: isEmployer,
         facebook_id: req.body.facebook_id
     });
     console.log(newUser);
@@ -80,7 +84,7 @@ router.get("/search", function(req, res, next) {
     let url = 'https://jobs.github.com/positions.json';
     let position = req.query.position;
     let location = req.query.location;
-		if(position) {
+	if(position) {
         position = position.replace(' ', '+');
     }
     if(location) {
