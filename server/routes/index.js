@@ -26,8 +26,15 @@ router.get('/good', function(req, res, next) {
 });
 
 router.get('/logout', isAuthenticated, function(req, res, next) {
+    ret = {};
 	req.session.destroy(function (err) {
-		res.redirect('/');
+        if(err) {
+            res.success = false;
+            res.err = err;
+        }else{
+            res.success = true;
+        }
+		res.send(JSON.stringify(ret));
 	});
 });
 
