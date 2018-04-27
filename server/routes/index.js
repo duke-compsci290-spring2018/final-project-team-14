@@ -76,11 +76,17 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
 router.get("/search", function(req, res, next) {
     //'https://jobs.github.com/positions.json?description=python&location=new+york'
     let url = 'https://jobs.github.com/positions.json';
-    let position = req.params['position'];
-    let location = req.params['location'];
-    console.log(position);
-    console.log(location);
-    /*
+    let position = req.query.position;
+    let location = req.query.location;
+    if (position || location) {
+        url += '?';
+    }
+    if(position) {
+        url += position;
+    }
+    if(location) {
+        url += location;
+    }
     https.get(url, (response) => {
         let data = '';
         response.on('data', (chunk) => {
@@ -92,7 +98,6 @@ router.get("/search", function(req, res, next) {
     }).on("error", (err) => {
         console.log("Error: " + err.message);
     });
-    */
 });
 
 module.exports = router;
