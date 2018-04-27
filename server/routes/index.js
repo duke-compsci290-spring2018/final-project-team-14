@@ -37,8 +37,10 @@ router.post('/signup', function(req, res, next) {
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        isEmployer: req.body.category,
         facebook_id: req.body.facebook_id
     });
+    console.log(newUser);
     newUser.save(function(err) {
         if (err) {
             console.log(err);

@@ -16,7 +16,7 @@ var User = require("./models/user");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var api = require('./routes/api');
+var api = require('./routes/admin');
 var auth = require('./routes/auth');
 
 var app = express();
@@ -86,7 +86,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/api', api);
+app.use('/admin', api);
 app.use('/auth', auth);
 
 // catch 404 and forward to error handler
