@@ -16,13 +16,47 @@ import Education from './Education.vue'
 import Skills from './Skills.vue'
 import Accomplishments from './Accomplishments.vue'
 import user from '../../JSON/user.json'
+import axios from 'axios'
 
 export default {
   name: 'Profile',
+
+  created() {
+    axios('http://127.0.0.1:8081/users/test', {
+        method: "get",
+      })
+      .then(response =>{
+        this.profile = response.data;
+        console.log(this.profile);
+        //console.log(response.data.summary.name);
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
+  },
   
   data () {
     return {
-      profile: user
+      profile: {
+        summary: {
+          name: "",
+          occupation: "",
+          school: "",
+          company: "",
+          position: "",
+          job: "",
+          selfIntro: ""
+        },
+        experience: [],
+        education: [],
+        skills: [],
+        accomplishments: {
+          courses: [],
+          projects: [],
+          languages: [],
+          tests: []
+        }
+      }
     }
   },
 
