@@ -9,7 +9,7 @@ function isAuthenticated(req, res, next) {
 	if(req.isAuthenticated()){
 		next();
 	}else{
-		res.redirect("/login");
+		res.redirect("/error");
 	}
 }
 
@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 	res.render('index', { title: 'Express' });
 });
 
-router.get('/login', function(req, res, next) {
+router.get('/error', function(req, res, next) {
     res.send(JSON.stringify({ success: false }));
 });
 
@@ -26,7 +26,7 @@ router.get('/good', function(req, res, next) {
 });
 
 router.get('/logout', isAuthenticated, function(req, res, next) {
-    ret = {};
+    var ret = {};
 	req.session.destroy(function (err) {
         if(err) {
             ret.success = false;
@@ -49,6 +49,7 @@ router.post('/signup', function(req, res, next) {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         isEmployer: isEmployer,
+        isAdmin: false,
         facebook_id: req.body.facebook_id
     });
     console.log(newUser);
@@ -68,7 +69,7 @@ router.get('/signup', function(req, res, next) {
 });
 
 router.get('/profile', isAuthenticated, function(req, res, next) {
-    ret = {};
+    var ret = {};
 	if (req.user){
         User.findOne({username: req.user.username}, function(err, user) {
             if(err || !user) {
