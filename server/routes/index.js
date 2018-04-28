@@ -4,6 +4,7 @@ var router = express.Router();
 var https = require('https');
 
 var User = require('../models/user');
+var Employer = require('../models/employer');
 
 function isAuthenticated(req, res, next) {
 	if(req.isAuthenticated()){
@@ -75,11 +76,36 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
         User.findOne({username: req.user.username}, function(err, user) {
             if(err || !user) {
                 ret.success = false;
+                res.send(JSON.stringify(ret));
             }else{
                 ret.success = true;
-                ret.data = user;
+                var data = {};
+                data.user = user;
+                if(user.isEmployer) {
+                    Employer.findOne({username: user.username}, function(err, emp){
+
+                        var list = emp.employees;
+                        var nameList = [];
+                        var statusList = [];
+                        for(var i=0;i<list.length;i++){
+                            nameList.push(list[i].username);
+                            statusList.push(list[i].status);
+                        }
+
+                        User.find({}, function(err, users){
+                            data.list = [];
+                            for(var i=0;i<users.length;i++){
+                                var tmp = nameList.indexOf(users[i].username);
+                                if(tmp > 0){
+                                    data.list.push({user: users[i], status: statusList[tmp]});
+                                }
+                            }
+                            ret.data = data;
+                            res.send(JSON.stringify(ret));
+                        });
+                    });
+                }
             }
-            res.send(JSON.stringify(ret));
         });
 	}
 	else{
@@ -120,6 +146,29 @@ router.get("/search", function(req, res, next) {
         });
     }).on("error", (err) => {
         console.log("Error: " + err.message);
+    });
+});
+
+router.post('/candidate', isAuthenticated, function(req, res, next) {
+    User.findOne({username: req.body.username}, function(err, user){
+
+        if(req.body.isAdd) {
+            Employer.findOneAndUpdate({username: req.user.username}, {$push: {employees: {username: user.username, status: "created"}}}, function(error, success){
+                if(err){
+                    res.send(JSON.stringify({success: false}));
+                }else{
+                    res.send(JSON.stringify({success: true}));
+                }
+            });
+        }else{
+            Employer.findOneAndUpdate({username: req.user.username}, {$pull: {employees: {username: username}}}, function(error, success){
+                if(err){
+                    res.send(JSON.stringify({success: false}));
+                }else{
+                    res.send(JSON.stringify({success: true}));
+                }
+            });
+        }
     });
 });
 
