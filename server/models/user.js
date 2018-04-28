@@ -21,6 +21,9 @@ const UserSchema = new Schema({
     isEmployer: {
         type: Boolean
     },
+    isAdmin: {
+        type: Boolean
+    },
     facebook_id: {
         type: String
     }
