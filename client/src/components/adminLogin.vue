@@ -14,7 +14,7 @@
         <div class="card-body">
           <form v-on:submit.prevent="signIn">
             <div class="form-group">
-              <label for="username">Username</label>
+              <label for="email">Username</label>
               <input type="email" class="form-control" id="email" v-model="userName" required>
             </div>
             <div class="form-group">
@@ -53,7 +53,7 @@ export default {
   },
   methods:{
     signIn: function(){
-      axios('http://127.0.0.1:8081/auth', {
+      axios('http://127.0.0.1:8081/admin/auth', {
         method: "post",
         data: { username: this.userName, password: this.password }
       })

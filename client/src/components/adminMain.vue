@@ -9,15 +9,15 @@
     <div class="mt-2 text-center">
       <h2>User List</h2>
       <ol class="row">
-        <li v-for="user in users" class="mr-3 mt-3 col-12 row">
+        <li v-for="user in users" :index = "user.id" class="mr-3 mt-3 col-12 row">
           <div class="col-4">
-            {{user["username"]}}
+            {{user["firstName"]}} {{user["lastName"]}}
           </div>
           <div class="col-4">
-            {{user["category"]}}
+            Employer: {{user["isEmployer"]}}
           </div>
           <div class="col-4">
-            <a v-on:click="delete_user">
+            <a v-on:click="delete_user(user.username)">
               <span class="fa fa-trash"></span>
             </a>
           </div>
@@ -28,29 +28,54 @@
 </template>
 
 <script>
-let users = [
-  {
-    username: "Yifeng Liu",
-    category: "employee"
-  },
-  {
-    username: "Yifeng Liu",
-    category: "employee"
-  }
-]
+import axios from 'axios';
+axios.defaults.withCredentials=true;
+
 export default {
   name: 'adminMain',
   data () {
     return {
-      users: users
+      users: null
     }
   },
   created(){
-
+      axios('http://127.0.0.1:8081/admin', {
+        method: "get",
+        withCredentials: true
+      })
+      .then(response => {
+        console.log(response);
+        this.users = response["data"]["data"];
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
   },
   methods:{
-    delete_user: function(){
-      console.log("delete_user");
+    delete_user: function(username){
+      axios('http://127.0.0.1:8081/admin/delete', {
+        method: "post",
+        data : {username: username}
+      })
+      .then(response => {
+        if (response["data"]["success"]){
+          console.log("1");
+          axios('http://127.0.0.1:8081/admin', {
+            method: "get",
+            withCredentials: true
+          })
+          .then(response => {
+            console.log(response);
+            this.users = response["data"]["data"];
+          })
+          .catch(e => {
+            this.errors.push(e);
+          });
+        }
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
     }
   }
 }
