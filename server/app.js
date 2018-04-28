@@ -58,6 +58,127 @@ User.findOne({username: ADMIN_EMAIL}, function(err, user){
     }
 });
 
+var Profile = require("./models/profile");
+/*
+var newProfile = new Profile({
+    username: "null@gmail.com",
+
+    summary: {
+        name: "",
+        occupation: "",
+        school: "",
+        company: "",
+        position: "",
+        job: "",
+        selfIntro: ""
+    },
+    experience: [],
+    education: [],
+    skills: [],
+    courses: [],
+    projects: [],
+    languages: [],
+    tests: []
+});
+newProfile.save(function(err){
+    if(err)
+        console.log(err);
+});
+
+
+var newProfile = new Profile({
+    username: "100@gmail.com",
+
+    summary: {
+        name: "Mike",
+        occupation: "MS Student in Computer Science at Duke University",
+        school: "Duke University",
+        company: "",
+        position: "Durham, NC, USA",
+        job: "Full-Stack Engineer",
+        selfIntro: "I am a fast learner and good at OOP. I have worked on some projects in mainstream programming languages, such as C++, Java and Python. Please feel free to email me! Thank you."
+    },
+
+    experience: [
+    {
+        title: "Research Assistant",
+        place: "Duke University",
+        timeStart: "2017",
+        timeEnd: "2018",
+        position: "Durham, NC, USA",
+        work: "Participated in a Machine Learning Project using C++"
+    }
+    ],
+
+    education: [
+    {
+        name: "Duke University",
+        timeStart: "2017",
+        timeEnd: "2019",
+        degree: "Master",
+        major: "Computer Science"
+    },
+
+    {
+        name: "Duke University",
+        timeStart: "2013",
+        timeEnd: "2017",
+        degree: "Bachelor",
+        major: "Computer Science"
+    }
+    ],
+
+    skills: ["C++", "Java", "Machine Learning"],
+
+        courses: ["Calculus", "Physics", "Deep Learning", "OOP", "Robust Server", "Computer Graphics"],
+        projects: [
+        {
+            name: "RSVP System",
+            timeStart: "Jan 2018",
+            timeEnd: "March 2018",
+            work: "Front end: Vue.js, Back end: MySQL"
+        },
+
+        {
+            name: "RSVP System 2",
+            timeStart: "Jan 2018",
+            timeEnd: "March 2018",
+            work: "Front end: React.js, Back end: MongoDB"
+        }
+        ],
+
+     languages: [
+      {
+       name: "Chinese",
+       proficiency: "Native"
+      },
+
+      {
+       name: "English",
+       proficiency: "Fluent"
+      }
+     ],
+
+     tests: [
+      {
+       name: "TOEFL",
+       score: "116"
+      },
+
+      {
+       name: "GRE",
+       score: "330 + 6"
+      }
+     ]
+});
+newProfile.save(function(err){
+    if(err)
+        console.log(err);
+});
+*/
+Profile.findOne({username: "null@gmail.com"}, function(err, data){
+    console.log(data);
+});
 
 // set up socket io
 var server = app.listen(3000);

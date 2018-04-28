@@ -79,46 +79,56 @@ router.get('/signup', function(req, res, next) {
 
 router.get('/profile', isAuthenticated, function(req, res, next) {
     var ret = {};
-	if (req.user){
-        User.findOne({username: req.user.username}, function(err, user) {
-            if(err || !user) {
+    User.findOne({username: req.user.username}, function(err, user) {
+        //error handling
+        if(err || !user) {
+            ret.success = false;
+            return res.send(JSON.stringify(ret));
+        }
+        var data = {};
+        //non-employer profile should just contain current user data...
+        if(!user.isEmployer) {
+            ret.success = true;
+            data.user = user;
+            ret.data = data;
+            return res.send(JSON.stringify(ret));
+        }
+        //employer profile should query all its candidates
+        Employer.findOne({username: user.username}, function(err, emp){
+            //error handling...
+            if(err || !emp){
                 ret.success = false;
-                res.send(JSON.stringify(ret));
-            }else{
-                ret.success = true;
-                var data = {};
-                data.user = user;
-                if(user.isEmployer) {
-                    Employer.findOne({username: user.username}, function(err, emp){
-                        if(err || !emp)
-                        var list = emp.employees;
-                        var nameList = [];
-                        var statusList = [];
-                        for(var i=0;i<list.length;i++){
-                            nameList.push(list[i].username);
-                            statusList.push(list[i].status);
-                        }
-
-                        User.find({}, function(err, users){
-                            data.list = [];
-                            for(var i=0;i<users.length;i++){
-                                var tmp = nameList.indexOf(users[i].username);
-                                if(tmp > 0){
-                                    data.list.push({user: users[i], status: statusList[tmp]});
-                                }
-                            }
-                            ret.data = data;
-                            res.send(JSON.stringify(ret));
-                        });
-                    });
-                }
+                return res.send(JSON.stringify(ret));
             }
+            //get all its candidates and make separation...
+            var list = emp.employees;
+            var nameList = [];
+            var statusList = [];
+            for(var i=0;i<list.length;i++){
+                nameList.push(list[i].username);
+                statusList.push(list[i].status);
+            }
+            //find all users and compare the username
+            User.find({}, function(err, users){
+                //error handling...
+                if(err || !users){
+                    ret.success = false;
+                    return res.send(JSON.stringify(ret));
+                }
+                //
+                data.list = [];
+                for(var i=0;i<users.length;i++){
+                    var tmp = nameList.indexOf(users[i].username);
+                    if(tmp > 0){
+                        console.log(users[i]);
+                        data.list.push({user: users[i], status: statusList[tmp]});
+                    }
+                }
+                ret.data = data;
+                return res.send(JSON.stringify(ret));
+            });
         });
-	}
-	else{
-        ret.success = false;
-        res.send(JSON.stringify(ret));
-	}
+    });
 });
 
 router.get("/search", function(req, res, next) {
