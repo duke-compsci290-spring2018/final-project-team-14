@@ -44,11 +44,6 @@ router.post('/signup', function(req, res, next) {
         isEmployer = true;
     }
 
-    var isAdmin = false;
-    if(req.body.username === "admin@gmail.com") {
-        isAdmin = true;
-    }
-
 	var newUser = new User({
         username: req.body.username,
         password: req.body.password,

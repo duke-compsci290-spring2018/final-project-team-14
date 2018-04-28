@@ -28,6 +28,31 @@ app.use(cors({
     credentials: true
 }));
 
+let ADMIN_EMAIL = "admin@gmail.com";
+let ADMIN_PASSWORD = "123";
+
+User.findOne({username: ADMIN_EMAIL}, function(err, user){
+    if(err) {
+        throw err;
+    }
+    if(!user){
+        var newUser = new User({
+            username: ADMIN_EMAIL,
+            password: ADMIN_PASSWORD,
+            firstName: "admin",
+            lastName: "admin",
+            isEmployer: false,
+            isAdmin: true,
+            facebook_id: "0"
+        });
+        newUser.save(function(err) {
+            console.log("finished");
+            if (err) {
+                throw err;
+            }
+        });
+    }
+});
 
 
 // set up socket io
