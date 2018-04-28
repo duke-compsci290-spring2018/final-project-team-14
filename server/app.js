@@ -36,6 +36,7 @@ User.findOne({username: ADMIN_EMAIL}, function(err, user){
         throw err;
     }
     if(!user){
+        console.log("Not found admin");
         var newUser = new User({
             username: ADMIN_EMAIL,
             password: ADMIN_PASSWORD,
@@ -45,8 +46,9 @@ User.findOne({username: ADMIN_EMAIL}, function(err, user){
             isAdmin: true,
             facebook_id: "0"
         });
+        console.log("Creating admin...");
         newUser.save(function(err) {
-            console.log("finished");
+            console.log("Created admin");
             if (err) {
                 throw err;
             }
