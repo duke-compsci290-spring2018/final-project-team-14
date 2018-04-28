@@ -16,9 +16,8 @@ router.get('/logout', isAuthenticated, function(req, res, next) {
 });
 
 router.post('/delete', isAuthenticated, function(req, res, next) {
-	var username = req.user.username;
-	var ret = {};
-	User.remove({username: username}, function(err){
+\	var ret = {};
+	User.remove({username: req.body.username}, function(err){
 		if(err) {
 			ret.success = false;
 			ret.err = err;
