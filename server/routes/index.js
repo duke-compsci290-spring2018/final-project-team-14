@@ -64,6 +64,13 @@ router.post('/signup', function(req, res, next) {
         }
         res.send(JSON.stringify(ret));
     });
+    if(newUser.isEmployer) {
+        var newEmp = new Employer({
+            username: newUser.username,
+            employees: []
+        });
+        newEmp.save();
+    }
 });
 
 router.get('/signup', function(req, res, next) {
@@ -83,7 +90,7 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                 data.user = user;
                 if(user.isEmployer) {
                     Employer.findOne({username: user.username}, function(err, emp){
-
+                        if(err || !emp)
                         var list = emp.employees;
                         var nameList = [];
                         var statusList = [];
