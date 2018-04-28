@@ -11,7 +11,7 @@
       <ol class="row">
         <li v-for="user in users" :index = "user.id" class="mr-3 mt-3 col-12 row">
           <div class="col-4">
-            {{user["firstName"]}} {{user["lastName"]}}
+            {{user["firstName"]}} {{user["lastName"]}} {{user["username"]}}
           </div>
           <div class="col-4">
             Employer: {{user["isEmployer"]}}
@@ -44,8 +44,8 @@ export default {
         withCredentials: true
       })
       .then(response => {
-        console.log(response);
         this.users = response["data"]["data"];
+        console.log(this.users);
       })
       .catch(e => {
         this.errors.push(e);
