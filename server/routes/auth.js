@@ -10,11 +10,4 @@ router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/facebook/callback', passport.authenticate('facebook', { successRedirect: '/good', failureRedirect: '/error'}));
 
-
-/*
-router.get('/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/login'}), function(req, res, next) {
-	res.redirect('/good');
-});
-*/
-
 module.exports = router;

@@ -88,7 +88,6 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
 });
 
 router.get("/search", function(req, res, next) {
-    //'https://jobs.github.com/positions.json?description=python&location=new+york'
     let url = 'https://jobs.github.com/positions.json';
     let position = req.query.position;
     let location = req.query.location;
