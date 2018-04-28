@@ -30,7 +30,7 @@
       </ul>
       <h4 class="text-center">Candidate List</h4>
       <ul>
-        <li v-for="(candidate, index) in candidates" :key = "index" class="mr-1 mt-1">
+        <li v-for="(candidate, index) in candidates" :key = "candidate.username" class="mr-1 mt-1">
           <div class="card" style="width: 15rem;" >
             <div class="card-body">
               <h5>{{candidate["firstName"]}} {{candidate["lastName"]}}</h5>
@@ -38,7 +38,7 @@
             </div>
             <div class="card-footer">
               <button role ="button" class="btn btn-info" href="#">View Info</button>
-              <button class="btn btn-success" @click="delete_candidate(index)">Delete</button>
+              <button class="btn btn-success" @click="delete_candidate(candidate)">Delete</button>
             </div>
           </div>
         </li>
@@ -74,19 +74,21 @@ export default {
       withCredentials: true
     })
     .then(response =>{
+      console.log(response);
       if (!response["data"]["success"]){
         this.$router.push({ path: `/`});
       }
       else{
         this.user_info = response["data"]["data"];
         this.isEmployer = !response["data"]["data"]["isEmployer"];
-        this.candidates = [];
+        this.candidates = response["data"]["data"]["list"];
+
+        // get the user
         axios('http://127.0.0.1:8081/admin', {
           method: "get",
           withCredentials: true
         })
         .then(response => {
-          console.log(response);
           this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
         })
         .catch(e => {
@@ -109,7 +111,6 @@ export default {
         params: { position: this.search_position, location: this.search_location}
       })
       .then(response =>{
-        this.jobs = [];
         this.jobs = response["data"];
         this.search_position = "";
         this.search_location = "";
@@ -119,11 +120,32 @@ export default {
       })
     },
     add: function(candidate){
-      console.log("add");
-      this.candidates.push(candidate);
+      axios('http://127.0.0.1:8081/candidate', {
+        method: "post",
+        data: { isAdd: true, username: candidate["username"]}
+      })
+      .then(response =>{
+        console.log(response);
+        axios('http://127.0.0.1:8081/profile', {
+          method: "get",
+          withCredentials: true
+        })
+        .then(response =>{
+          console.log(response);
+          this.candidates = response["data"]["data"]["list"];
+        })
+        .catch(e => {
+          this.errors.push(e);
+        })
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
     },
-    delete_candidate: function(index){
-      this.candidates.splice(index);
+    delete_candidate: function(candidate){
+      var index = this.candidates.indexOf(candidate);
+      console.log(index);
+      this.candidates.splice(index, 1);
     }
   }
 }
