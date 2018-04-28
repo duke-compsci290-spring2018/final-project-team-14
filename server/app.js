@@ -21,6 +21,7 @@ var auth = require('./routes/auth');
 
 var app = express();
 
+//cors options
 app.use(cors({
     origin:['http://localhost:8080'],
     methods:['GET','POST', 'OPTIONS'],
@@ -28,6 +29,34 @@ app.use(cors({
     credentials: true
 }));
 
+//create admin
+let ADMIN_EMAIL = "admin@gmail.com";
+let ADMIN_PASSWORD = "123";
+
+User.findOne({username: ADMIN_EMAIL}, function(err, user){
+    if(err) {
+        throw err;
+    }
+    if(!user){
+        console.log("Not found admin");
+        var newUser = new User({
+            username: ADMIN_EMAIL,
+            password: ADMIN_PASSWORD,
+            firstName: "admin",
+            lastName: "admin",
+            isEmployer: false,
+            isAdmin: true,
+            facebook_id: "0"
+        });
+        console.log("Creating admin...");
+        newUser.save(function(err) {
+            console.log("Created admin");
+            if (err) {
+                throw err;
+            }
+        });
+    }
+});
 
 
 // set up socket io

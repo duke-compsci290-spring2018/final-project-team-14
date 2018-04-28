@@ -39,34 +39,29 @@ router.get('/logout', isAuthenticated, function(req, res, next) {
 });
 
 router.post('/signup', function(req, res, next) {
+    var ret = {};
     var isEmployer = false;
     if(req.body.category == 2){
         isEmployer = true;
     }
-
-    var isAdmin = false;
-    if(req.body.username === "admin@gmail.com") {
-        isAdmin = true;
-    }
-
 	var newUser = new User({
         username: req.body.username,
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         isEmployer: isEmployer,
-        isAdmin: isAdmin,
+        isAdmin: false,
         facebook_id: req.body.facebook_id
     });
-    console.log(newUser);
     newUser.save(function(err) {
         if (err) {
+            ret.success = false;
+            ret.err = err;
             console.log(err);
-            res.send(JSON.stringify({ success: false }));
         } else {
-        	console.log("finished");
-            res.send(JSON.stringify({ success: true }));
+            ret.success = true;
         }
+        res.send(JSON.stringify(ret));
     });
 });
 

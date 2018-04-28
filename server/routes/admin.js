@@ -30,7 +30,7 @@ router.post('/delete', isAuthenticated, function(req, res, next) {
 
 router.get('/', isAuthenticated, function(req, res, next) {
 	var ret = {};
-	User.find({}, function(err, users) {
+	User.find({isAdmin: false}, function(err, users) {
 		if(err) {
 			ret.success = false;
 			ret.err = err;
