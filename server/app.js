@@ -21,6 +21,7 @@ var auth = require('./routes/auth');
 
 var app = express();
 
+//cors options
 app.use(cors({
     origin:['http://localhost:8080'],
     methods:['GET','POST', 'OPTIONS'],
@@ -28,6 +29,7 @@ app.use(cors({
     credentials: true
 }));
 
+//create admin
 let ADMIN_EMAIL = "admin@gmail.com";
 let ADMIN_PASSWORD = "123";
 
