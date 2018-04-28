@@ -1,11 +1,11 @@
 <template>
 	<div class="main">
 		<h1>Profile</h1>
-		<Summary></Summary>
-		<Experience></Experience>
-		<Education></Education>
-		<Skills></Skills>
-		<Accomplishments></Accomplishments>		
+		<Summary :summary-data="profile.summary"></Summary>
+		<Experience :exp-data="profile.experience"></Experience>
+		<Education :edu-data="profile.education"></Education>
+		<Skills :skill-data="profile.skills"></Skills>
+		<Accomplishments :accomp-data="profile.accomplishments"></Accomplishments>
 	</div>
 </template>
 
@@ -15,14 +15,14 @@ import Experience from './Experience.vue'
 import Education from './Education.vue'
 import Skills from './Skills.vue'
 import Accomplishments from './Accomplishments.vue'
-import data from '../../user.json'
+import user from '../../JSON/user.json'
 
 export default {
   name: 'Profile',
   
   data () {
     return {
-      
+      profile: user
     }
   },
 
@@ -35,12 +35,19 @@ export default {
   },
 
   methods: {
-
+  	test() {
+  		console.log("data:");
+  		console.log(this.profile.experience);
+  	}
   }
 }
 </script>
 
 <style scoped>
+.main {
+	margin-left: 20%;
+	margin-right: 20%;
+}
 h1 {
 	text-align: center;
 }

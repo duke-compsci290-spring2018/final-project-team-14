@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import LogIn_SignUp from '@/components/LogIn_SignUp'
 import Main from '@/components/Main'
 import Profile  from '@/components/Profile/Profile'
+
 Vue.use(Router)
 
 export default new Router({
