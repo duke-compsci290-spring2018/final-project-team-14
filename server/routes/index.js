@@ -29,10 +29,10 @@ router.get('/logout', isAuthenticated, function(req, res, next) {
     ret = {};
 	req.session.destroy(function (err) {
         if(err) {
-            res.success = false;
-            res.err = err;
+            ret.success = false;
+            ret.err = err;
         }else{
-            res.success = true;
+            ret.success = true;
         }
 		res.send(JSON.stringify(ret));
 	});
