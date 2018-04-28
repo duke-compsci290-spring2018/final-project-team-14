@@ -43,8 +43,12 @@ router.get('/', isAuthenticated, function(req, res, next) {
 	});
 });
 
-router.post('/auth', passport.authenticate('admin', { failureRedirect: '/error' }), function(req, res) {
-	res.redirect('/good');
+router.post('/auth', passport.authenticate('local', { failureRedirect: '/error' }), function(req, res) {
+	if(req.user.isAdmin) {
+		res.redirect("/good");
+	}else{
+		res.redirect("/error");
+	}
 });
 
 module.exports = router;
