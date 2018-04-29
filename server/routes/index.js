@@ -169,8 +169,18 @@ router.get("/search", function(req, res, next) {
 
 router.post('/candidate', isAuthenticated, function(req, res, next) {
     Employer.findOne({username: req.user.username}, function(err, emp){
+        //TODO: error handling
         console.log(err);
+        for(var i=0; i<emp.employees.length; i++){
+            if(emp.employees[i].username === req.body.username) {
+                break;
+            }
+        }
+        console.log("Found username at index: "+i);
         if(req.body.isAdd){
+            if(i < emp.employees.length){
+                return res.send(JSON.stringify({success: true}));
+            }
             emp.employees.push({username: req.body.username, status: "created"});
             emp.save(function(err){
                 if(err){
@@ -181,12 +191,7 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
                 }
             });
         }else{
-            for(let i=0; i<emp.employees.length; i++){
-                if(emp.employees[i].username === req.body.username) {
-                    emp.employees.splice(i, 1);
-                    break;
-                }
-            }
+            emp.employees.splice(i, 1);
             emp.save(function(err){
                 if(err){
                     console.log(err);
