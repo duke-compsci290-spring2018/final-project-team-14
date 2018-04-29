@@ -1,15 +1,18 @@
 <template>
-	<div class="main">
-		<h1>Profile</h1>
-		<Summary :summary-data="profile.summary" @summaryChanged="updateData"></Summary>
-		<Experience :exp-data="profile.experience" @expChanged="updateData"></Experience>
-		<Education :edu-data="profile.education" @eduChanged="updateData"></Education>
-		<Skills :skill-data="profile.skills" @skillChanged="updateData"></Skills>
-		<Accomplishments :accomp-data="profile.accomplishments" @accompChanged="updateData"></Accomplishments>
+	<div>
+		<MainNav/>
+		<div class="main">
+			<Summary :summary-data="profile.summary" @summaryChanged="updateData"></Summary>
+			<Experience :exp-data="profile.experience" @expChanged="updateData"></Experience>
+			<Education :edu-data="profile.education" @eduChanged="updateData"></Education>
+			<Skills :skill-data="profile.skills" @skillChanged="updateData"></Skills>
+			<Accomplishments :accomp-data="profile.accomplishments" @accompChanged="updateData"></Accomplishments>
+		</div>
 	</div>
 </template>
 
 <script>
+import MainNav from "./../MainNav.vue";
 import Summary from './Summary.vue'
 import Experience from './Experience.vue'
 import Education from './Education.vue'
@@ -22,18 +25,19 @@ export default {
   name: 'Profile',
 
   created() {
-    axios('http://127.0.0.1:8081/users/test', {
+    axios('http://127.0.0.1:8081/users/profile', {
         method: "get",
+				withCredentials: true
       })
       .then(response =>{
+				console.log(response);
         this.profile = response.data;
-        console.log(this.profile);
       })
       .catch(e => {
         this.errors.push(e);
       });
   },
-  
+
   data () {
     return {
       profile: {
@@ -61,16 +65,17 @@ export default {
 
   components: {
   	Summary,
-  	Experience, 
-  	Education, 
-  	Skills, 
-  	Accomplishments
+  	Experience,
+  	Education,
+  	Skills,
+  	Accomplishments,
+		MainNav
   },
 
   methods: {
     updateData(data) {
       console.log(data);
-      axios('http://127.0.0.1:8081/users/test', {
+      axios('http://127.0.0.1:8081/users/profile', {
         method: "post",
         data: {profile: this.profile}
       })
