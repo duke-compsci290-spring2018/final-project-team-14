@@ -71,4 +71,36 @@ router.get('/profile/:username', function(req, res, next) {
 	});
 });
 
+const Guid = require('guid');
+const sha256 = require('sha256');
+const jwt = require('jsonwebtoken');
+const fetch = require('node-fetch');
+
+function generateToken(content) {
+    return jwt.sign({
+        jti: Guid.raw(),
+        iss: 'c8e83a26-20ac-f885-62c6-7235831bdcc5',
+        sub: sha256(content),
+        exp: Math.floor(Date.now() / 1000) + 10
+    }, '08532387-96f8-181a-52e6-92ef5984f0ee');
+}
+
+router.get('/create', function(req, res,next) {
+    const payload = {}
+    fetch('https://interviews.skype.com/api/interviews', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + generateToken(JSON.stringify(payload))
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+	.then((response) => {
+		var url = response.urls[0].url;
+        console.log(url);
+        res.send(url);
+	});
+});
+
 module.exports = router;

@@ -25,6 +25,9 @@
     "bcrypt": "",
     "socket.io": "",
     "cors": "",
-    "nodemailer": ""
+    "nodemailer": "",
+    "guid": "",
+    "sha256": "",
+    "node-fetch": ""
   }
 }
