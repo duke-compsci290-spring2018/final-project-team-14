@@ -59,7 +59,7 @@ User.findOne({username: ADMIN_EMAIL}, function(err, user){
 });
 
 var Profile = require("./models/profile");
-/*
+
 var newProfile = new Profile({
     username: "null@gmail.com",
 
@@ -86,8 +86,12 @@ newProfile.save(function(err){
 });
 
 
+
+
+Profile.findOne({username: "5@gmail.com"}, function(err, data){
+    if(!data){
 var newProfile = new Profile({
-    username: "100@gmail.com",
+    username: "5@gmail.com",
 
     summary: {
         name: "Mike",
@@ -174,11 +178,8 @@ var newProfile = new Profile({
 newProfile.save(function(err){
     if(err)
         console.log(err);
+    console.log("successfully add a user profile");
 });
-*/
-Profile.findOne({username: "null@gmail.com"}, function(err, data){
-    if(!data){
-
     }
 });
 
