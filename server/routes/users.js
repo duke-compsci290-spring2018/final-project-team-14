@@ -54,7 +54,7 @@ router.post('/profile', function(req, res, next) {
 		}
 	});
 	var newProfile = new Profile({
-    	username: req.body.username,
+    	username: req.user.username,
     	summary: profile.summary,
     	experience: profile.experience,
     	education: profile.education,
