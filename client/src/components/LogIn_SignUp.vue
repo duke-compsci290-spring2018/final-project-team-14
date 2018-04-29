@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
               <label for="skype">Skpye ID</label>
-              <input type="text" class="form-control" id="skype" v-model="skype" required>
+              <input type="text" class="form-control" id="skype" v-model="skype_id" required>
             </div>
             <div class="form-group">
               <select class="custom-select" required v-model="category">
@@ -75,7 +75,7 @@ export default {
       lastName: null,
       category: null,
       email: null,
-      skype: null,
+      skype_id: null,
       signIn_password:null
     }
   },
@@ -110,7 +110,7 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           category: this.category,
-          skype: this.skype
+          skype_id: this.skype_id
         }
       })
       .then(response =>{
