@@ -86,10 +86,10 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
             return res.send(JSON.stringify(ret));
         }
         var data = {};
+        data.user = user;
         //non-employer profile should just contain current user data...
         if(!user.isEmployer) {
             ret.success = true;
-            data.user = user;
             ret.data = data;
             return res.send(JSON.stringify(ret));
         }
@@ -125,6 +125,7 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                     }
                 }
                 ret.data = data;
+                ret.success = true;
                 return res.send(JSON.stringify(ret));
             });
         });
