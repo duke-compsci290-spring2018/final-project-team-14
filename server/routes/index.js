@@ -53,7 +53,8 @@ router.post('/signup', function(req, res, next) {
         lastName: req.body.lastName,
         isEmployer: isEmployer,
         isAdmin: false,
-        facebook_id: req.body.facebook_id
+        facebook_id: req.body.facebook_id,
+        skype_id: req.body.skype_id
     });
     newUser.save(function(err) {
         if (err) {

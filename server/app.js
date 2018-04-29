@@ -252,17 +252,37 @@ app.use((req, res, next) => {
     next();
 });
 
+
+io.on('connection', function (socket) {
+    
+});
+
 // set up socket io
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+
+var usernames = [];
+
 io.on('connection', (socket) => {  
-    console.log('Client connected...');
-    socket.on('join', (data) => {
-        console.log(data);
+    console.log('New client connected...');
+    var username;
+    socket.on('login', (data) => {
+        if(usernames.indexOf(data.username) > 0){
+            socket.emit('loginFail', '');
+        }else{
+            username = data.username;
+            usernames.push(username);
+            socket.emit('loginSuccess', data);
+            io.sockets.emit('add', data);
+        }
     });
-    socket.on('messages', (data) => {
-        socket.emit('broad', data);
-        socket.broadcast.emit('broad', data);
+    socket.on('sendMessage', (data) => {
+        io.sockets.emit('receiveMessage', data);
+    });
+
+    socket.on('disconnect', () => {
+        io.sockets.emit('leave', username);
+        usernames.splice(usernames.indexOf(username), 1);
     });
 });
 app.get('/chat', function(req, res,next) {  
