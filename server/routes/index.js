@@ -101,6 +101,7 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                 return res.send(JSON.stringify(ret));
             }
             //get all its candidates and make separation...
+            console.log(emp);
             var list = emp.employees;
             var nameList = [];
             var statusList = [];
@@ -189,6 +190,7 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
                 }
             });
         }
+        console.log(emp);
     });
 
     //User.findOne({username: req.body.username}, function(err, user){
