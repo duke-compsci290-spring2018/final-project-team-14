@@ -64,6 +64,8 @@
 
 <script>
 import axios from 'axios';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 export default {
   name: 'LogIn_SignUp',
@@ -83,7 +85,7 @@ export default {
   },
   methods:{
     logIn: function(){
-      axios('http://127.0.0.1:8081/auth', {
+      axios(config.domain + ':8081/auth', {
         method: "post",
         data: { username: this.userName, password: this.password }
       })
@@ -102,7 +104,7 @@ export default {
       });
     },
     signUp: function(){
-      axios('http://127.0.0.1:8081/signup', {
+      axios(config.domain + ':8081/signup', {
         method: "post",
         data:{
           username: this.email,

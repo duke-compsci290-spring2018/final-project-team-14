@@ -19,6 +19,8 @@
 
 <script>
 import axios from 'axios';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 export default {
   name: 'MainNav',
@@ -28,7 +30,7 @@ export default {
   },
   methods:{
     signOut: function(){
-      axios('http://127.0.0.1:8081/logout', {
+      axios(config.domain + ':8081/logout', {
         method: "get",
         withCredentials: true
       })

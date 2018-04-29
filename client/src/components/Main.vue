@@ -116,6 +116,8 @@ import MainNav from "./MainNav.vue";
 import Job from "./Job.vue";
 import axios from 'axios';
 import $ from 'jquery';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 export default {
   name: 'Main',
@@ -145,7 +147,7 @@ export default {
       "education" : ""
     }
 
-    axios('http://127.0.0.1:8081/profile', {
+    axios(config.domain + ':8081/profile', {
       method: "get",
       withCredentials: true
     })
@@ -159,7 +161,7 @@ export default {
         this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
         this.candidates = response["data"]["data"]["list"];
         // get the user
-        axios('http://127.0.0.1:8081/admin', {
+        axios(config.domain + ':8081/admin', {
           method: "get",
           withCredentials: true
         })
@@ -183,7 +185,7 @@ export default {
     interview: function(candidate){
       console.log(candidate.date);
       console.log(candidate);
-      axios(`http://127.0.0.1:8081/users/interview`, {
+      axios(config.domain + ':8081/users/interview', {
         method: "post",
         data: {username: candidate["user"]["username"] , date: candidate.date}
       })
@@ -196,7 +198,7 @@ export default {
     },
     get_employee_info: function(user){
       console.log(user)
-      axios(`http://127.0.0.1:8081/users/profile/${user["username"]}`, {
+      axios(config.domain + ':8081/users/profile/${user["username"]}', {
         method: "get"
       })
       .then(response =>{
@@ -207,7 +209,7 @@ export default {
       })
     },
     search: function(){
-      axios('http://127.0.0.1:8081/search', {
+      axios(config.domain + ':8081/search', {
         method: "get",
         params: { position: this.search_position, location: this.search_location}
       })
@@ -221,12 +223,12 @@ export default {
       })
     },
     add: function(candidate){
-      axios('http://127.0.0.1:8081/candidate', {
+      axios(config.domain + ':8081/candidate', {
         method: "post",
         data: { isAdd: true, username: candidate["username"]}
       })
       .then(response =>{
-        axios('http://127.0.0.1:8081/profile', {
+        axios(config.domain + ':8081/profile', {
           method: "get",
           withCredentials: true
         })
@@ -242,13 +244,13 @@ export default {
       })
     },
     delete_candidate: function(candidate){
-      axios('http://127.0.0.1:8081/candidate', {
+      axios(config.domain + ':8081/candidate', {
         method: "post",
         data: { isAdd: false, username: candidate["user"]["username"]}
       })
       .then(response =>{
         console.log(response);
-        axios('http://127.0.0.1:8081/profile', {
+        axios(config.domain + ':8081/profile', {
           method: "get",
           withCredentials: true
         })

@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios'
+import config from '../config.js'
 
 export default {
   name: 'Chatroom',
@@ -44,7 +45,7 @@ export default {
   created() {
     var that = this;
     console.log("chat room created()");
-    axios('http://127.0.0.1:8081/users/profile', {
+    axios(config.domain + ':8081/users/profile', {
         method: "get",
         withCredentials: true
       })
@@ -52,7 +53,7 @@ export default {
         console.log(response.data.summary.name);
         this.user = response.data.summary.name;
 
-        this.socket = io('http://127.0.0.1:8082');
+        this.socket = io(config.domain + ':8082');
         this.socket.emit('login', {userName: this.user});
 
          /*log in succeed*/
