@@ -12,7 +12,14 @@ const EmployerSchema = new Schema({
         status: String,
         date: String,
         url: String
-    }]
+    }],
+    company: {
+        type: String
+    },
+    name: {
+        first: String,
+        last: String
+    }
 });
 
 module.exports = mongoose.model('Employer', EmployerSchema);

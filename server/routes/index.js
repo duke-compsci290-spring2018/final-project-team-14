@@ -52,9 +52,9 @@ router.post('/signup', function(req, res, next) {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         isEmployer: isEmployer,
+        company: req.body.company,
         isAdmin: false,
-        facebook_id: req.body.facebook_id,
-        skype_id: req.body.skype_id
+        facebook_id: req.body.facebook_id
     });
     newUser.save(function(err) {
         if (err) {
@@ -69,7 +69,9 @@ router.post('/signup', function(req, res, next) {
     if(newUser.isEmployer) {
         var newEmp = new Employer({
             username: newUser.username,
-            employees: []
+            employees: [],
+            name: {first: req.body.firstName, last: req.body.lastName},
+            company: req.body.company
         });
         newEmp.save();
     }
@@ -117,7 +119,25 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
         if(!user.isEmployer) {
             ret.success = true;
             ret.data = data;
-            return res.send(JSON.stringify(ret));
+            Employer.find({}, function(err, emps){
+                let retList = [];
+                for(let i=0;i<emps.length;i++){
+                    var list = emps[i].employees;
+                    for(let j=0;j<list.length;j++){
+                        if(list[j].username === req.user.username){
+                            retList.push({
+                                name: emp[i].name.first+" "+emp[i].name.last,
+                                company: emp[i].company,
+                                url: list[j].url,
+                                date: list[j].date
+                            })
+                            break;
+                        }
+                    }
+                }
+                ret.data.list = retList;
+                return res.send(JSON.stringify(ret));
+            });   
         }
         //employer profile should query all its candidates
         Employer.findOne({username: user.username}, function(err, emp){

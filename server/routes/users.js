@@ -80,6 +80,23 @@ router.get('/profile/:username', function(req, res, next) {
 	});
 });
 
+router.get('/chat', function(req, res, next) {
+	User.findOne({username: req.user.username}, function(err, user){
+		ret = {};
+		if(err || !user){
+			ret.success = false;
+			if(err){
+				console.log(err);
+				ret.err = err;
+			}
+		}else{
+			ret.success = true;
+			ret.data = {username: user.username, firstName: user.firstName, lastName: user.lastName};
+		}
+		res.send(JSON.stringify(ret));
+	});
+});
+
 const Guid = require('guid');
 const sha256 = require('sha256');
 const jwt = require('jsonwebtoken');
