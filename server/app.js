@@ -263,13 +263,13 @@ var usernames = [];
 
 io.on('connection', (socket) => {
     console.log('New client connected...');
-    var username;
+    var userName;
     socket.on('login', (data) => {
-        if(usernames.indexOf(data.username) > 0){
+        if(usernames.indexOf(data.userName) > 0){
             socket.emit('loginFail', '');
         }else{
-            username = data.username;
-            usernames.push(username);
+            userName = data.userName;
+            usernames.push(userName);
             socket.emit('loginSuccess', data);
             io.sockets.emit('add', data);
         }
@@ -278,8 +278,8 @@ io.on('connection', (socket) => {
         io.sockets.emit('receiveMessage', data);
     });
     socket.on('disconnect', () => {
-        io.sockets.emit('leave', username);
-        usernames.splice(usernames.indexOf(username), 1);
+        io.sockets.emit('leave', userName);
+        usernames.splice(usernames.indexOf(userName), 1);
     });
 });
 app.get('/chat', function(req, res,next) {
