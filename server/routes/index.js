@@ -86,10 +86,10 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
             return res.send(JSON.stringify(ret));
         }
         var data = {};
+        data.user = user;
         //non-employer profile should just contain current user data...
         if(!user.isEmployer) {
             ret.success = true;
-            data.user = user;
             ret.data = data;
             return res.send(JSON.stringify(ret));
         }
@@ -119,12 +119,13 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                 data.list = [];
                 for(var i=0;i<users.length;i++){
                     var tmp = nameList.indexOf(users[i].username);
-                    if(tmp > 0){
+                    if(tmp >= 0){
                         console.log(users[i]);
                         data.list.push({user: users[i], status: statusList[tmp]});
                     }
                 }
                 ret.data = data;
+                ret.success = true;
                 return res.send(JSON.stringify(ret));
             });
         });
@@ -167,19 +168,33 @@ router.get("/search", function(req, res, next) {
 });
 
 router.post('/candidate', isAuthenticated, function(req, res, next) {
-    User.findOne({username: req.body.username}, function(err, user){
-
-        if(req.body.isAdd) {
-            Employer.findOneAndUpdate({username: req.user.username}, {$push: {employees: {username: user.username, status: "created"}}}, function(error, success){
+    Employer.findOne({username: req.user.username}, function(err, emp){
+        //TODO: error handling
+        console.log(err);
+        for(var i=0; i<emp.employees.length; i++){
+            if(emp.employees[i].username === req.body.username) {
+                break;
+            }
+        }
+        console.log("Found username at index: "+i);
+        if(req.body.isAdd){
+            if(i < emp.employees.length){
+                return res.send(JSON.stringify({success: true}));
+            }
+            emp.employees.push({username: req.body.username, status: "created"});
+            emp.save(function(err){
                 if(err){
+                    console.log(err);
                     res.send(JSON.stringify({success: false}));
                 }else{
                     res.send(JSON.stringify({success: true}));
                 }
             });
         }else{
-            Employer.findOneAndUpdate({username: req.user.username}, {$pull: {employees: {username: username}}}, function(error, success){
+            emp.employees.splice(i, 1);
+            emp.save(function(err){
                 if(err){
+                    console.log(err);
                     res.send(JSON.stringify({success: false}));
                 }else{
                     res.send(JSON.stringify({success: true}));

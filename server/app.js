@@ -86,8 +86,10 @@ newProfile.save(function(err){
 });
 */
 
+Profile.findOne({username: "5@gmail.com"}, function(err, data){
+    if(!data){
 var newProfile = new Profile({
-    username: "100@gmail.com",
+    username: "5@gmail.com",
 
     summary: {
         name: "Mike",
@@ -174,12 +176,11 @@ var newProfile = new Profile({
 newProfile.save(function(err){
     if(err)
         console.log(err);
+    console.log("successfully add a user profile");
 });
-/*
-Profile.findOne({username: "null@gmail.com"}, function(err, data){
-    console.log(data);
+    }
 });
-*/
+
 
 // set up socket io
 var server = app.listen(3000);
@@ -265,4 +266,5 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
 });
+
 module.exports = app;

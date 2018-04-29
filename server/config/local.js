@@ -16,10 +16,11 @@ passport.use(new LocalStrategy({
             if (!user) {
                 return done(null, false);
             }
-            user.comparePassword(password, function(err, isMatch) {
-                if (err) throw err;
-                //console.log(password, isMatch);
-                if(!isMatch){
+            user.comparePassword(password, function(err, isMatch) {                
+                if(err || !isMatch){
+                    if (err) {
+                        console.log(err);
+                    }
                     return done(null, false);
                 }
             });
