@@ -26,6 +26,9 @@ const UserSchema = new Schema({
     },
     facebook_id: {
         type: String
+    },
+    skype_id: {
+        type: String
     }
 });
 

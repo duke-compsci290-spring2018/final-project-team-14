@@ -24,6 +24,7 @@
     "express-session": "",
     "bcrypt": "",
     "socket.io": "",
-    "cors": ""
+    "cors": "",
+    "nodemailer": ""
   }
 }
