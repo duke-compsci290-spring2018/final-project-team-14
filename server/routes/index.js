@@ -168,10 +168,36 @@ router.get("/search", function(req, res, next) {
 });
 
 router.post('/candidate', isAuthenticated, function(req, res, next) {
-    User.findOne({username: req.body.username}, function(err, user){
+    Employer.findOne({username: req.user.username}, function(err, emp){
+        if(req.body.isAdd){
+            emp.employees.push(req.body.username);
+            emp.save(function(err){
+                if(err){
+                    res.send(JSON.stringify({success: false}));
+                }else{
+                    res.send(JSON.stringify({success: true}));
+                }
+            });
+        }else{
+            var ind = emp.employees.indexOf(req.body.username);
+            emp.employees.splice(ind, 1);
+            emp.save(function(err){
+                if(err){
+                    res.send(JSON.stringify({success: false}));
+                }else{
+                    res.send(JSON.stringify({success: true}));
+                }
+            });
+        }
+    });
 
+    //User.findOne({username: req.body.username}, function(err, user){
+
+        /*
         if(req.body.isAdd) {
-            Employer.findOneAndUpdate({username: req.user.username}, {$push: {employees: {username: req.body.username, status: "created"}}}, function(error, success){
+            Employer.findOneAndUpdate({username: req.user.username}, 
+                {$push: {employees: {username: req.body.username, status: "created"}}}, 
+                function(error, success){
                 if(err){
                     res.send(JSON.stringify({success: false}));
                 }else{
@@ -187,7 +213,8 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
                 }
             });
         }
-    });
+        */
+    //});
 });
 
 module.exports = router;
