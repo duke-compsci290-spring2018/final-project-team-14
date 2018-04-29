@@ -130,9 +130,13 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
             var list = emp.employees;
             var nameList = [];
             var statusList = [];
+            var urlList = [];
+            var dateList = [];
             for(var i=0;i<list.length;i++){
                 nameList.push(list[i].username);
                 statusList.push(list[i].status);
+                urlList.push(list[i].url);
+                dateList.push(list[i].date);
             }
             //find all users and compare the username
             User.find({}, function(err, users){
@@ -147,7 +151,7 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                     var tmp = nameList.indexOf(users[i].username);
                     if(tmp >= 0){
                         console.log(users[i]);
-                        data.list.push({user: users[i], status: statusList[tmp]});
+                        data.list.push({user: users[i], status: statusList[tmp], url: urlList[i], date: dateList[i]});
                     }
                 }
                 ret.data = data;
