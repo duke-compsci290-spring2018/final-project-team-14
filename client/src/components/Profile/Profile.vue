@@ -39,6 +39,10 @@ export default {
   		console.log("data:");
   		console.log(this.profile.experience);
   	}
+  },
+
+  updated() {
+    console.log("something updated!");
   }
 }
 </script>
