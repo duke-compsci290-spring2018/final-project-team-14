@@ -3,16 +3,10 @@
   "version": "1.0.0",
   "description": "Final project for CompSci 290",
   "main": "server/app.js",
-  "scripts": {
-    
-  },
+  "scripts": {},
   "author": "Xinghao Cheng <xinghao.cheng@duke.edu>",
   "license": "MIT",
   "private": true,
-  "dependencies": {
-
-  },
-  "devDependencies": {
-
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

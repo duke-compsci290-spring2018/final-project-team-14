@@ -36,6 +36,10 @@
               <input type="password" class="form-control" id="password" v-model="signIn_password" required>
             </div>
             <div class="form-group">
+              <label for="skype">Skpye ID</label>
+              <input type="text" class="form-control" id="skype" v-model="skype" required>
+            </div>
+            <div class="form-group">
               <select class="custom-select" required v-model="category">
                 <option value="1">Employee</option>
                 <option value="2">Employer</option>
@@ -71,6 +75,7 @@ export default {
       lastName: null,
       category: null,
       email: null,
+      skype: null,
       signIn_password:null
     }
   },
@@ -104,11 +109,11 @@ export default {
           password: this.signIn_password,
           firstName: this.firstName,
           lastName: this.lastName,
-          category: this.category
+          category: this.category,
+          skype: this.skype
         }
       })
       .then(response =>{
-        console.log(response);
         if (response["data"]["success"]){
           this.$router.push({ path: `/main`});
         }
@@ -141,7 +146,7 @@ export default {
   top: 50%;
   left: 50%;
   width: 400px;
-  height: 560px;
+  height: 640px;
   transform: translate(-50%, -50%);
 }
 </style>

@@ -185,9 +185,9 @@ newProfile.save(function(err){
 
 // user authentication and session
 app.use(session({
-    resave: false, 
-    saveUninitialized: true, 
-    secret: 'secret', 
+    resave: false,
+    saveUninitialized: true,
+    secret: 'secret',
     cookie: {}
     })
 );
@@ -258,7 +258,7 @@ var io = require('socket.io')(server);
 
 var usernames = [];
 
-io.on('connection', (socket) => {  
+io.on('connection', (socket) => {
     console.log('New client connected...');
     var username;
     socket.on('login', (data) => {
@@ -279,9 +279,9 @@ io.on('connection', (socket) => {
         usernames.splice(usernames.indexOf(username), 1);
     });
 });
-app.get('/chat', function(req, res,next) {  
+app.get('/chat', function(req, res,next) {
     res.sendFile(__dirname+'/views/chat.html');
 });
-server.listen(8082); 
+server.listen(8082);
 
 module.exports = app;
