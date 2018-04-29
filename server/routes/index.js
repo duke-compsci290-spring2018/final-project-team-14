@@ -171,7 +171,7 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
     Employer.findOne({username: req.user.username}, function(err, emp){
         console.log(err);
         if(req.body.isAdd){
-            emp.employees.push(req.body.username);
+            emp.employees.push({username: req.body.username, status: "created"});
             emp.save(function(err){
                 if(err){
                     console.log(err);
