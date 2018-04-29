@@ -5,10 +5,10 @@
           <div v-for="item in megs" id="m">
             <div style="text-align: right;" class="me" v-if="item.self">
               <span class="message">{{item.message}}</span>
-              <span class="name">{{item.userName}}</span>
+              <span class="name">{{item.realName}}</span>
             </div>
             <div style="text-align: left;" class="others" v-else>
-              <span class="name">{{item.userName}}</span>
+              <span class="name">{{item.realName}}</span>
               <span class="message">{{item.message}}</span>
             </div>            
           </div>
@@ -109,7 +109,7 @@ export default {
 
     sendMessage() {
       if (this.message) {
-        this.socket.emit('sendMessage', {userName: this.name, message: this.message, self: false});
+        this.socket.emit('sendMessage', {userName: this.user, realName: this.name, message: this.message, self: false});
         this.message = '';
       }
     }

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Profile = require('../models/profile');
 var Employer = require('../models/employer');
+var User = require('../models/user');
 
 var sendEmail = require('../utils/email');
 
@@ -80,7 +81,8 @@ router.get('/profile/:username', function(req, res, next) {
 	});
 });
 
-router.get('/chat', function(req, res, next) {
+router.get('/chat', isAuthenticated, function(req, res, next) {
+	console.log(req.user.username);
 	User.findOne({username: req.user.username}, function(err, user){
 		ret = {};
 		if(err || !user){
