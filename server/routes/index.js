@@ -120,7 +120,7 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                 data.list = [];
                 for(var i=0;i<users.length;i++){
                     var tmp = nameList.indexOf(users[i].username);
-                    if(tmp > 0){
+                    if(tmp >= 0){
                         console.log(users[i]);
                         data.list.push({user: users[i], status: statusList[tmp]});
                     }
