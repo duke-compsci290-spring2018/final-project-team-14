@@ -177,7 +177,9 @@ newProfile.save(function(err){
 });
 */
 Profile.findOne({username: "null@gmail.com"}, function(err, data){
-    console.log(data);
+    if(!data){
+        
+    }
 });
 
 // set up socket io

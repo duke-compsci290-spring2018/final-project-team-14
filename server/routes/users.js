@@ -90,4 +90,21 @@ router.get('/profile', function(req, res, next) {
 	});
 });
 
+//for employer, need check authorization
+router.get('/profile/:username', function(req, res, next) {
+	Profile.findOne({username: req.params.username}, (err, data) => {
+	    ret = {};
+	    ret.summary = data.summary;
+	    ret.experience = data.experience;
+	    ret.education = data.education;
+	    ret.skills = data.skills;
+	    ret.accomplishments = {};
+	    ret.accomplishments.courses = data.courses;
+	    ret.accomplishments.projects = data.projects;
+	    ret.accomplishments.languages = data.languages;
+	    ret.accomplishments.tests = data.tests;
+	    res.send(JSON.stringify(ret));
+	});
+});
+
 module.exports = router;
