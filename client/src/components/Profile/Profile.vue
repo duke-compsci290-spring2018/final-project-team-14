@@ -70,6 +70,16 @@ export default {
   methods: {
     updateData(data) {
       console.log(data);
+      axios('http://127.0.0.1:8081/users/test', {
+        method: "post",
+        data: {profile: this.profile}
+      })
+      .then(response =>{
+        console.log(response);
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
     },
 
   	test() {
