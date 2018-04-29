@@ -3,11 +3,11 @@
       <div>
         <div v-if="chatting">
           <div v-for="item in megs" id="m">
-            <div style="text-align: right;" class="others" v-if="item.self">
+            <div style="text-align: right;" class="me" v-if="item.self">
               <span class="message">{{item.message}}</span>
               <span class="name">{{item.userName}}</span>
             </div>
-            <div style="text-align: left;" class="me" v-else>
+            <div style="text-align: left;" class="others" v-else>
               <span class="name">{{item.userName}}</span>
               <span class="message">{{item.message}}</span>
             </div>            
@@ -156,5 +156,9 @@ export default {
   background-color: #eeeeee;
   border: 2px solid #efffff;
   padding: 5px;
+}
+
+.me .message {
+  background-color: #B0E46E;
 }
 </style>
