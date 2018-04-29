@@ -79,7 +79,6 @@
             </div>
             <div class="card-footer">
               <button role ="button" class="btn btn-info" data-toggle="modal" :data-target="'#model' + index" @click = "get_employee_info(candidate.user)">View Info</button>
-              <button role ="button" class="btn btn-success">Skype</button>
               <button class="btn btn-danger" @click="delete_candidate(candidate)">Delete</button>
             </div>
           </div>
