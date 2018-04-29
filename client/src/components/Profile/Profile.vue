@@ -8,6 +8,7 @@
 			<Skills :skill-data="profile.skills" @skillChanged="updateData"></Skills>
 			<Accomplishments :accomp-data="profile.accomplishments" @accompChanged="updateData"></Accomplishments>
 		</div>
+    <span class="skype-button bubble " data-contact-id="yifeng.liu2"></span>
 	</div>
 </template>
 
