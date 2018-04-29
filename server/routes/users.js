@@ -75,14 +75,15 @@ const Guid = require('guid');
 const sha256 = require('sha256');
 const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
+const config = require('../config/secret');
 
 function generateToken(content) {
     return jwt.sign({
         jti: Guid.raw(),
-        iss: 'c8e83a26-20ac-f885-62c6-7235831bdcc5',
+        iss: config.SKYPE_APP_ID,
         sub: sha256(content),
         exp: Math.floor(Date.now() / 1000) + 10
-    }, '08532387-96f8-181a-52e6-92ef5984f0ee');
+    }, config.SKYPE_APP_SECRET);
 }
 
 router.get('/create', function(req, res,next) {

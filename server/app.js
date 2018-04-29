@@ -9,10 +9,6 @@ var passport = require('passport');
 var session = require('express-session')
 var cors = require('cors')
 var config = require('./config/database');
-const Guid = require('guid');
-const sha256 = require('sha256');
-const jwt = require('jsonwebtoken');
-const fetch = require('node-fetch');
 const mongoose = require('mongoose');
 mongoose.connect(config.database);
 
@@ -286,10 +282,5 @@ app.get('/chat', function(req, res,next) {
     res.sendFile(__dirname+'/views/chat.html');
 });
 server.listen(8082);
-
-
-
-
-
 
 module.exports = app;
