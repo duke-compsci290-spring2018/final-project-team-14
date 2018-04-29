@@ -181,8 +181,12 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
                 }
             });
         }else{
-            var ind = emp.employees.indexOf(req.body.username);
-            emp.employees.splice(ind, 1);
+            for(let i=0; i<emp.employees.length; i++){
+                if(emp.employees[i].username === req.body.username) {
+                    emp.employees.splice(i, 1);
+                    break;
+                }
+            }
             emp.save(function(err){
                 if(err){
                     console.log(err);
