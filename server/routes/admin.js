@@ -4,7 +4,7 @@ var passport = require('passport');
 var User = require('../models/user');
 
 function isAdminAuthenticated(req, res, next) {
-	if(req.isAuthenticated() && req.user.isAdmin){
+	if(req.isAuthenticated()){
 		next();
 	}else{
 		res.redirect("/error");
