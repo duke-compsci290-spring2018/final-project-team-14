@@ -9,7 +9,9 @@ const EmployerSchema = new Schema({
     },
     employees: [{
         username: String, 
-        status: String
+        status: String,
+        date: String,
+        url: String
     }]
 });
 
