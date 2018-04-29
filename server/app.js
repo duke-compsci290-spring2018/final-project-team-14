@@ -84,7 +84,7 @@ newProfile.save(function(err){
     if(err)
         console.log(err);
 });
-
+*/
 
 var newProfile = new Profile({
     username: "100@gmail.com",
@@ -175,10 +175,11 @@ newProfile.save(function(err){
     if(err)
         console.log(err);
 });
-*/
+/*
 Profile.findOne({username: "null@gmail.com"}, function(err, data){
     console.log(data);
 });
+*/
 
 // set up socket io
 var server = app.listen(3000);
