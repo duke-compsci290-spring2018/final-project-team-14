@@ -8,8 +8,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link active" href="#">Home</a>
-        <a class="nav-item nav-link" href="#">Message</a>
+        <router-link class="nav-item nav-link active" :to="{ path: '/main' }">Home</router-link>
+        <a class="nav-item nav-link" href="#">Interview</a>
         <router-link class="nav-item nav-link" :to="{ path: '/user/profile' }">Profile</router-link>
         <a class="nav-item nav-link" v-on:click="signOut">Sign Out</a>
       </div>
@@ -24,7 +24,6 @@ export default {
   name: 'MainNav',
   data () {
     return {
-
     }
   },
   methods:{

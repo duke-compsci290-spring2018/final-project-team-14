@@ -274,7 +274,6 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', (data) => {
         io.sockets.emit('receiveMessage', data);
     });
-
     socket.on('disconnect', () => {
         io.sockets.emit('leave', username);
         usernames.splice(usernames.indexOf(username), 1);
