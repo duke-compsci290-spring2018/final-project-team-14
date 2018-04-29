@@ -3,19 +3,19 @@ var router = express.Router();
 var passport = require('passport');
 var User = require('../models/user');
 
-function isAuthenticated(req, res, next) {
-	if(req.isAuthenticated()){
+function isAdminAuthenticated(req, res, next) {
+	if(req.isAuthenticated() && req.user.isAdmin){
 		next();
 	}else{
 		res.redirect("/error");
 	}
 }
 
-router.get('/logout', isAuthenticated, function(req, res, next) {
+router.get('/logout', isAdminAuthenticated, function(req, res, next) {
 	res.redirect('/logout');
 });
 
-router.post('/delete', isAuthenticated, function(req, res, next) {
+router.post('/delete', isAdminAuthenticated, function(req, res, next) {
 	var ret = {};
 	User.remove({username: req.body.username}, function(err){
 		if(err) {
@@ -28,7 +28,7 @@ router.post('/delete', isAuthenticated, function(req, res, next) {
 	});
 });
 
-router.get('/', isAuthenticated, function(req, res, next) {
+router.get('/', isAdminAuthenticated, function(req, res, next) {
 	var ret = {};
 	User.find({isAdmin: false}, function(err, users) {
 		if(err) {
