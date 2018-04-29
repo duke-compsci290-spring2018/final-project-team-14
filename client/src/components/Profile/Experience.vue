@@ -123,8 +123,8 @@
 				<div class="my-1">{{item.timeStart}} - {{item.timeEnd}}</div>
 				<div class="my-1">{{item.position}}</div>
 				<p class="my-3">{{item.work}}</p>
-			</div>			
-		</div>	
+			</div>
+		</div>
 
 	</div>
 </template>
@@ -132,7 +132,7 @@
 <script>
 export default {
   name: 'Experience',
-  
+
   props: ['expData'],
 
   data () {
@@ -147,11 +147,6 @@ export default {
     	}
     }
   },
-
-  updated() {
-  	console.log(this.expData[0].title);
-  },
-
   methods: {
   	add() {
   		var exp = {
@@ -160,7 +155,7 @@ export default {
 			timeStart: this.newExp.timeStart,
 			timeEnd: this.newExp.timeEnd,
 			position: this.newExp.position,
-			work: this.newExp.work 			
+			work: this.newExp.work
   		};
   		this.expData.push(exp);
   		this.trigger();

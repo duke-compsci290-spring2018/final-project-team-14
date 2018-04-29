@@ -12,7 +12,7 @@
         <Job :job="job" />
       </li>
     </ul>
-    <div class="mt-2">
+    <div class="mt-2" v-else>
       <h4 class="text-center">Employee List</h4>
       <ul>
         <li v-for="(user, index) in users" :key = "index" class="mr-1 mt-1">
@@ -22,7 +22,48 @@
               <h6>{{user["category"]}}</h6>
             </div>
             <div class="card-footer">
-              <button role ="button" class="btn btn-info" href="#">View Info</button>
+              <button role ="button" class="btn btn-info" data-toggle="modal" :data-target="'#model' + index" @click = "get_employee_info(user)">View Info</button>
+              <div class="modal fade" :id="'model' + index">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <div class="text-center">
+                        <h4>{{employee_info.summary.name}}</h4>
+                        <p>{{employee_info.summary.occupation}}</p>
+                        <p>{{employee_info.summary.position}}</p>
+                        <p>{{employee_info.summary.selfIntro}}</p>
+                      </div>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <h3>Education: </h3>
+                      <ul>
+                        <li v-for="school in employee_info.education" class="education">
+                          <h5>{{school.name}} &nbsp; &nbsp; &nbsp;{{school.timeStart}} - {{school.timeEnd}}</h5>
+                          <p>{{school.degree}} {{school.major}}</p>
+                        </li>
+                      </ul>
+                      <h3>Experiences: </h3>
+                      <ul>
+                        <li v-for = "exp in employee_info.experience" class="education">
+                          <h5>{{exp.title}} &nbsp; &nbsp; &nbsp; {{exp.timeStart}} - {{exp.timeEnd}}</h5>
+                          <h6>{{exp.place}} &nbsp; &nbsp; &nbsp; {{exp.position}}</h6>
+                          <p>{{exp.work}}</p>
+                        </li>
+                      </ul>
+                      <h3>Skills: </h3>
+                      <ol>
+                        <li v-for = "skill in employee_info.skills" class="education">
+                          <p>{{skill}}</p>
+                        </li>
+                      </ol>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <button class="btn btn-success" @click="add(user)" >Add</button>
             </div>
           </div>
@@ -33,11 +74,11 @@
         <li v-for="(candidate, index) in candidates" :key = "candidate.username" class="mr-1 mt-1">
           <div class="card" style="width: 15rem;" >
             <div class="card-body">
-              <h5>{{candidate["firstName"]}} {{candidate["lastName"]}}</h5>
-              <h6>{{candidate["category"]}}</h6>
+              <h5>{{candidate["user"]["firstName"]}} {{candidate["user"]["lastName"]}}</h5>
+              <h6>{{candidate["status"]}}</h6>
             </div>
             <div class="card-footer">
-              <button role ="button" class="btn btn-info" href="#">View Info</button>
+              <button role ="button" class="btn btn-info" data-toggle="modal" :data-target="'#model' + index" @click = "get_employee_info(candidate.user)">View Info</button>
               <button class="btn btn-success" @click="delete_candidate(candidate)">Delete</button>
             </div>
           </div>
@@ -57,18 +98,29 @@ export default {
   name: 'Main',
   data(){
     return{
-      firstName: null,
-      lastName: null,
       jobs: null,
       search_position: null,
       search_location: null,
       user_info:null,
       isEmployee:null,
       users: null,
-      candidates: null
+      candidates: null,
+      employee_info: null
     }
   },
   created(){
+    this.employee_info = {
+      "summary" : {
+        "name" : "",
+        "occupation" : "",
+        "position" : "",
+        "selfIntro" : ""
+      },
+      "experience" : "",
+      "skills" : "",
+      "education" : ""
+    }
+
     axios('http://127.0.0.1:8081/profile', {
       method: "get",
       withCredentials: true
@@ -79,8 +131,8 @@ export default {
         this.$router.push({ path: `/`});
       }
       else{
-        this.user_info = response["data"]["data"];
-        this.isEmployer = !response["data"]["data"]["isEmployer"];
+        this.user_info = response["data"]["data"]["user"];
+        this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
         this.candidates = response["data"]["data"]["list"];
 
         // get the user
@@ -105,6 +157,19 @@ export default {
     Job
   },
   methods:{
+    get_employee_info: function(user){
+      console.log(user)
+      axios(`http://127.0.0.1:8081/users/profile/${user["username"]}`, {
+        method: "get"
+      })
+      .then(response =>{
+        console.log(response);
+        this.employee_info = response["data"];
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
+    },
     search: function(){
       axios('http://127.0.0.1:8081/search', {
         method: "get",
@@ -125,13 +190,11 @@ export default {
         data: { isAdd: true, username: candidate["username"]}
       })
       .then(response =>{
-        console.log(response);
         axios('http://127.0.0.1:8081/profile', {
           method: "get",
           withCredentials: true
         })
         .then(response =>{
-          console.log(response);
           this.candidates = response["data"]["data"]["list"];
         })
         .catch(e => {
@@ -143,9 +206,26 @@ export default {
       })
     },
     delete_candidate: function(candidate){
-      var index = this.candidates.indexOf(candidate);
-      console.log(index);
-      this.candidates.splice(index, 1);
+      axios('http://127.0.0.1:8081/candidate', {
+        method: "post",
+        data: { isAdd: false, username: candidate["user"]["username"]}
+      })
+      .then(response =>{
+        console.log(response);
+        axios('http://127.0.0.1:8081/profile', {
+          method: "get",
+          withCredentials: true
+        })
+        .then(response =>{
+          this.candidates = response["data"]["data"]["list"];
+        })
+        .catch(e => {
+          this.errors.push(e);
+        })
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
     }
   }
 }
@@ -158,5 +238,8 @@ export default {
   li{
     list-style: none;
     display: inline-block;
+  }
+  .education{
+    display: block;
   }
 </style>

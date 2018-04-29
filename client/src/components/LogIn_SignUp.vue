@@ -83,7 +83,6 @@ export default {
         data: { username: this.userName, password: this.password }
       })
       .then(response => {
-        console.log(response);
         if (response["data"]["success"]){
           this.$router.push({ path: `/main`});
         }
@@ -98,7 +97,6 @@ export default {
       });
     },
     signUp: function(){
-      console.log(this.signIn_password);
       axios('http://127.0.0.1:8081/signup', {
         method: "post",
         data:{

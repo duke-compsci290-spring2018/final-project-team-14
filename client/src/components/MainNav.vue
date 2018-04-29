@@ -10,7 +10,7 @@
       <div class="navbar-nav ml-auto">
         <a class="nav-item nav-link active" href="#">Home</a>
         <a class="nav-item nav-link" href="#">Message</a>
-        <a class="nav-item nav-link" href="#">Profile</a>
+        <router-link class="nav-item nav-link" :to="{ path: '/user/profile' }">Profile</router-link>
         <a class="nav-item nav-link" v-on:click="signOut">Sign Out</a>
       </div>
     </div>
@@ -34,7 +34,6 @@ export default {
         withCredentials: true
       })
       .then(response =>{
-        console.log(response);
         this.$router.push({ path: `/`});
       })
       .catch(e => {
