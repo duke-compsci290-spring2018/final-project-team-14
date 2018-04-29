@@ -36,8 +36,8 @@
               <input type="password" class="form-control" id="password" v-model="signIn_password" required>
             </div>
             <div class="form-group">
-              <label for="skype">Skpye ID</label>
-              <input type="text" class="form-control" id="skype" v-model="skype_id" required>
+              <label for="company">Company</label>
+              <input type="text" class="form-control" id="company" v-model="company" required>
             </div>
             <div class="form-group">
               <select class="custom-select" required v-model="category">
@@ -75,7 +75,7 @@ export default {
       lastName: null,
       category: null,
       email: null,
-      skype_id: null,
+      company: null,
       signIn_password:null
     }
   },
@@ -110,7 +110,7 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           category: this.category,
-          skype_id: this.skype_id
+          company: this.company
         }
       })
       .then(response =>{

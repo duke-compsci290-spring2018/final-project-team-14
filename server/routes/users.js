@@ -99,6 +99,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 
 	var username = req.body.username;
 	var date = req.body.date;
+	console.log(username);
 	Employer.findOne({username: req.user.username}, function(err, emp){
 		var list = emp.employees;
 		for(let i=0;i<list.length;i++){
@@ -122,6 +123,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 							var url = response.urls[0].url;
 					        console.log(url);
 					        emp.employees[i].url = url;
+									console.log(emp);
 					        emp.save(function(err){
 					        	res.send(JSON.stringify({ success: true }));
 					        });
@@ -143,30 +145,15 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 						var url = response.urls[0].url;
 				        console.log(url);
 				        emp.employees[i].url = url;
+								console.log(emp);
 				        emp.save(function(err){
 				        	res.send(JSON.stringify({ success: true }));
 						});
-				    });  
+				    });
 				}
 				break;
 			}
 		}
-	});
-
-    const payload = {}
-    fetch('https://interviews.skype.com/api/interviews', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + generateToken(JSON.stringify(payload))
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-	.then((response) => {
-		var url = response.urls[0].url;
-        console.log(url);
-        res.send(url);
 	});
 });
 

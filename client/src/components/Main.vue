@@ -75,12 +75,34 @@
           <div class="card" style="width: 20rem;" >
             <div class="card-body">
               <h5>{{candidate["user"]["firstName"]}} {{candidate["user"]["lastName"]}}</h5>
-              <h6>{{candidate["status"]}}</h6>
             </div>
             <div class="card-footer">
               <button role ="button" class="btn btn-info" data-toggle="modal" :data-target="'#model' + index" @click = "get_employee_info(candidate.user)">View Info</button>
               <button class="btn btn-danger" @click="delete_candidate(candidate)">Delete</button>
-              <button class="btn btn-success" @click="interview()">Interview</button>
+              <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#interview' + index">Interview</button>
+              <div class="modal fade" :id="'interview' + index">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <form @submit.prevent = "interview(candidate)">
+                        <div class="form-group">
+                          <label :for="'date' + index">Date</label>
+                          <input type="date" class="form-control" :id="'date' + index" v-model="candidate.date">
+                        </div>
+                        <div class="form-group">
+                          <label :for="'url' + index">Url</label>
+                          <input type="text" class="form-control" :id="'url' + index" v-model="candidate.url" disabled>
+                        </div>
+                        <button class="btn btn-success">Save</button>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </li>
@@ -106,8 +128,8 @@ export default {
       isEmployee:null,
       users: null,
       candidates: null,
-      employee_info: null,
-      firstName:null
+      employee_info: null
+
     }
   },
   created(){
@@ -136,7 +158,6 @@ export default {
         this.user_info = response["data"]["data"]["user"];
         this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
         this.candidates = response["data"]["data"]["list"];
-
         // get the user
         axios('http://127.0.0.1:8081/admin', {
           method: "get",
@@ -160,11 +181,14 @@ export default {
   },
   methods:{
     interview: function(candidate){
-      axios(`http://127.0.0.1:8081/users/create`, {
-        method: "get"
+      console.log(candidate.date);
+      console.log(candidate);
+      axios(`http://127.0.0.1:8081/users/interview`, {
+        method: "post",
+        data: {username: candidate["user"]["username"] , date: candidate.date}
       })
       .then(response =>{
-        console.log(response);
+
       })
       .catch(e => {
         this.errors.push(e);
