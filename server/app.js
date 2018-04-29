@@ -254,27 +254,20 @@ app.use((req, res, next) => {
 
 // set up socket io
 var server = require('http').createServer(app);
-
 var io = require('socket.io')(server);
-
-io.on('connection', function(client) {  
+io.on('connection', (socket) => {  
     console.log('Client connected...');
-
-    client.on('join', function(data) {
+    socket.on('join', (data) => {
         console.log(data);
     });
-
-    client.on('messages', function(data) {
-           client.emit('broad', data);
-           client.broadcast.emit('broad',data);
+    socket.on('messages', (data) => {
+        socket.emit('broad', data);
+        socket.broadcast.emit('broad', data);
     });
-
 });
-
 app.get('/chat', function(req, res,next) {  
     res.sendFile(__dirname+'/views/chat.html');
 });
-
 server.listen(8082); 
 
 module.exports = app;
