@@ -182,21 +182,6 @@ newProfile.save(function(err){
 });
 
 
-// set up socket io
-var server = app.listen(3000);
-
-var io = require('socket.io').listen(server);
-
-app.get('/chat', function(req, res){
-    res.sendFile(__dirname + '/views/chat.html');
-});
-
-io.on('connection', function(socket){
-    socket.on('chat message', function(msg){
-        console.log(msg);
-        io.emit('chat message', msg);
-    });
-});
 
 // user authentication and session
 app.use(session({
@@ -266,5 +251,30 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
 });
+
+// set up socket io
+var server = require('http').createServer(app);
+
+var io = require('socket.io')(server);
+
+io.on('connection', function(client) {  
+    console.log('Client connected...');
+
+    client.on('join', function(data) {
+        console.log(data);
+    });
+
+    client.on('messages', function(data) {
+           client.emit('broad', data);
+           client.broadcast.emit('broad',data);
+    });
+
+});
+
+app.get('/chat', function(req, res,next) {  
+    res.sendFile(__dirname+'/views/chat.html');
+});
+
+server.listen(8082); 
 
 module.exports = app;
