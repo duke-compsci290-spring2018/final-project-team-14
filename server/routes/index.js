@@ -171,7 +171,7 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                     var tmp = nameList.indexOf(users[i].username);
                     if(tmp >= 0){
                         console.log(users[i]);
-                        data.list.push({user: users[i], status: statusList[tmp], url: urlList[i], date: dateList[i]});
+                        data.list.push({user: users[i], status: statusList[tmp], url: urlList[tmp], date: dateList[tmp]});
                     }
                 }
                 ret.data = data;
