@@ -2,6 +2,25 @@
 <template>
   <div>
     <MainNav/>
+    <div class="mt-2" v-if='isEmployee'>
+      <h4 class="text-center">My Interviews</h4>
+        <ul>
+          <li v-for = "interview in interviews">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{interview["name"]}}</h5>
+                <h6 class="card-title">{{interview["company"]}}</h6>
+                <p class="card-text">
+                  {{interview["url"]}}
+                </p>
+                <p class="card-text">
+                  {{interview["date"]}}
+                </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+    </div>
     <form class="form-inline d-flex justify-content-center" v-on:submit.prevent="search" v-if='isEmployee'>
       <input type="text" class="form-control col-4" placeholder="Search Jobs" v-model="search_position">
       <input type="text" class="form-control col-4 ml-2" placeholder="Search Location" v-model="search_location">
@@ -128,7 +147,8 @@ export default {
       isEmployee:null,
       users: null,
       candidates: null,
-      employee_info: null
+      employee_info: null,
+      interviews: null
 
     }
   },
@@ -157,18 +177,20 @@ export default {
       else{
         this.user_info = response["data"]["data"]["user"];
         this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
-        this.candidates = response["data"]["data"]["list"];
-        // get the user
-        axios('http://127.0.0.1:8081/admin', {
-          method: "get",
-          withCredentials: true
-        })
-        .then(response => {
-          this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
-        })
-        .catch(e => {
-          this.errors.push(e);
-        });
+        this.interviews = response["data"]["data"]["list"];
+        if (!this.isEmployee){
+          this.candidates = response["data"]["data"]["list"];
+          axios('http://127.0.0.1:8081/admin', {
+            method: "get",
+            withCredentials: true
+          })
+          .then(response => {
+            this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
+          })
+          .catch(e => {
+            this.errors.push(e);
+          });
+        }
       }
     })
     .catch(e => {
@@ -181,14 +203,41 @@ export default {
   },
   methods:{
     interview: function(candidate){
-      console.log(candidate.date);
       console.log(candidate);
       axios(`http://127.0.0.1:8081/users/interview`, {
         method: "post",
         data: {username: candidate["user"]["username"] , date: candidate.date}
       })
       .then(response =>{
-
+        axios('http://127.0.0.1:8081/profile', {
+          method: "get",
+          withCredentials: true
+        })
+        .then(response =>{
+          console.log(response);
+          if (!response["data"]["success"]){
+            this.$router.push({ path: `/`});
+          }
+          else{
+            this.user_info = response["data"]["data"]["user"];
+            this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
+            this.candidates = response["data"]["data"]["list"];
+            // get the user
+            axios('http://127.0.0.1:8081/admin', {
+              method: "get",
+              withCredentials: true
+            })
+            .then(response => {
+              this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
+            })
+            .catch(e => {
+              this.errors.push(e);
+            });
+          }
+        })
+        .catch(e => {
+          this.errors.push(e);
+        });
       })
       .catch(e => {
         this.errors.push(e);

@@ -126,8 +126,8 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                     for(let j=0;j<list.length;j++){
                         if(list[j].username === req.user.username){
                             retList.push({
-                                name: emp[i].name.first+" "+emp[i].name.last,
-                                company: emp[i].company,
+                                name: emps[i].name.first+" "+emps[i].name.last,
+                                company: emps[i].company,
                                 url: list[j].url,
                                 date: list[j].date
                             })
@@ -137,48 +137,49 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                 }
                 ret.data.list = retList;
                 return res.send(JSON.stringify(ret));
-            });   
-        }
-        //employer profile should query all its candidates
-        Employer.findOne({username: user.username}, function(err, emp){
-            //error handling...
-            if(err || !emp){
-                ret.success = false;
-                return res.send(JSON.stringify(ret));
-            }
-            //get all its candidates and make separation...
-            var list = emp.employees;
-            var nameList = [];
-            var statusList = [];
-            var urlList = [];
-            var dateList = [];
-            for(var i=0;i<list.length;i++){
-                nameList.push(list[i].username);
-                statusList.push(list[i].status);
-                urlList.push(list[i].url);
-                dateList.push(list[i].date);
-            }
-            //find all users and compare the username
-            User.find({}, function(err, users){
-                //error handling...
-                if(err || !users){
-                    ret.success = false;
-                    return res.send(JSON.stringify(ret));
-                }
-                //
-                data.list = [];
-                for(var i=0;i<users.length;i++){
-                    var tmp = nameList.indexOf(users[i].username);
-                    if(tmp >= 0){
-                        console.log(users[i]);
-                        data.list.push({user: users[i], status: statusList[tmp], url: urlList[tmp], date: dateList[tmp]});
-                    }
-                }
-                ret.data = data;
-                ret.success = true;
-                return res.send(JSON.stringify(ret));
             });
-        });
+        }else{
+					//employer profile should query all its candidates
+	        Employer.findOne({username: user.username}, function(err, emp){
+	            //error handling...
+	            if(err || !emp){
+	                ret.success = false;
+	                return res.send(JSON.stringify(ret));
+	            }
+	            //get all its candidates and make separation...
+	            var list = emp.employees;
+	            var nameList = [];
+	            var statusList = [];
+	            var urlList = [];
+	            var dateList = [];
+	            for(var i=0;i<list.length;i++){
+	                nameList.push(list[i].username);
+	                statusList.push(list[i].status);
+	                urlList.push(list[i].url);
+	                dateList.push(list[i].date);
+	            }
+	            //find all users and compare the username
+	            User.find({}, function(err, users){
+	                //error handling...
+	                if(err || !users){
+	                    ret.success = false;
+	                    return res.send(JSON.stringify(ret));
+	                }
+	                //
+	                data.list = [];
+	                for(var i=0;i<users.length;i++){
+	                    var tmp = nameList.indexOf(users[i].username);
+	                    if(tmp >= 0){
+	                        console.log(users[i]);
+	                        data.list.push({user: users[i], status: statusList[tmp], url: urlList[tmp], date: dateList[tmp]});
+	                    }
+	                }
+	                ret.data = data;
+	                ret.success = true;
+	                return res.send(JSON.stringify(ret));
+	            });
+	        });
+				}
     });
 });
 
