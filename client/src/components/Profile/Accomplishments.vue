@@ -230,7 +230,7 @@
 			                    </div>
 
 			                    <div class="modal-footer">
-			                        <button class="btn btn-outline-secondary" data-dismiss="modal">Submit</button>
+			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="editProject">Submit</button>
 			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="removeProject(index)">Delete</button>
 			                    </div>
 
@@ -288,7 +288,7 @@
 			                    </div>
 
 			                    <div class="modal-footer">
-			                        <button class="btn btn-outline-secondary" data-dismiss="modal">Submit</button>
+			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="editLanguage">Submit</button>
 			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="removeLanguage(index)">Delete</button>
 			                    </div>
 
@@ -339,7 +339,7 @@
 			                    </div>
 
 			                    <div class="modal-footer">
-			                        <button class="btn btn-outline-secondary" data-dismiss="modal">Submit</button>
+			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="editTest">Submit</button>
 			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="removeTest">Delete</button>
 			                    </div>
 
@@ -382,6 +382,7 @@ export default {
   methods: {
   	addCourse() {
   		this.accompData.courses.push(this.newCourse);
+  		this.trigger();
   		this.clearCourse();
   	},
 
@@ -393,6 +394,7 @@ export default {
     		work: this.newProject.work			
   		};
   		this.accompData.projects.push(project);
+  		this.trigger();
   		this.clearProject;
   	},
 
@@ -402,6 +404,7 @@ export default {
     		proficiency: this.newLanguage.proficiency		
   		};
   		this.accompData.languages.push(language);
+  		this.trigger();
   		this.clearProject;
   	},
 
@@ -411,6 +414,7 @@ export default {
     		score: this.newTest.score		
   		};
   		this.accompData.tests.push(test);
+  		this.trigger();
   		this.clearProject;
   	},
 
@@ -438,18 +442,38 @@ export default {
 
   	removeCourse(index) {
   		this.accompData.courses.splice(index, 1);
+  		this.trigger();
   	},
 
   	removeProject(index) {
   		this.accompData.projects.splice(index, 1);
+  		this.trigger();
   	},
 
   	removeLanguage(index) {
   		this.accompData.languages.splice(index, 1);
+  		this.trigger();
   	},
 
   	removeTest(index) {
   		this.accompData.tests.splice(index, 1);
+  		this.trigger();
+  	},
+
+  	editProject(index) {
+  		this.trigger();
+  	},
+
+  	editLanguage(index) {
+  		this.trigger();
+  	},
+
+  	editTest(index) {
+  		this.trigger();
+  	},
+
+  	trigger() {
+  		this.$emit('accompChanged', this.accompData);
   	}
   }
 }

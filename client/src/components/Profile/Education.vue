@@ -149,6 +149,7 @@ export default {
 	    	major: this.newEdu.major			
   		};
   		this.eduData.push(edu);
+  		this.trigger();
   		this.clearAddEdu();
   	},
 
@@ -160,10 +161,16 @@ export default {
 
   	remove(index) {
   		this.eduData.splice(index, 1);
+  		this.trigger();
   	},
 
   	edit() {
+  		this.trigger();
   		console.log('Edit summary');
+  	},
+
+  	trigger() {
+  		this.$emit('eduChanged', this.eduData);
   	}
   }
 }
