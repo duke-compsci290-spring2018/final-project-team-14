@@ -48,7 +48,7 @@ router.post('/test', function(req, res, next) {
 
 router.post('/profile', function(req, res, next) {
 	var profile = req.body.profile;
-	Profile.remove({username: req.body.username}, (err) => {
+	Profile.remove({username: req.user.username}, (err) => {
 		if(err){
 			console.log(err);
 		}
@@ -75,7 +75,7 @@ router.post('/profile', function(req, res, next) {
 });
 
 router.get('/profile', function(req, res, next) {
-	Profile.findOne({username: req.body.username}, (err, data) => {
+	Profile.findOne({username: req.user.username}, (err, data) => {
 	    ret = {};
 	    ret.summary = data.summary;
 	    ret.experience = data.experience;
