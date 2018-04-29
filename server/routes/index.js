@@ -5,6 +5,7 @@ var https = require('https');
 
 var User = require('../models/user');
 var Employer = require('../models/employer');
+var Profile = require('../models/profile');
 
 function isAuthenticated(req, res, next) {
 	if(req.isAuthenticated()){
@@ -71,6 +72,30 @@ router.post('/signup', function(req, res, next) {
         });
         newEmp.save();
     }
+		var newProfile = new Profile({
+		    username: req.body.username,
+
+		    summary: {
+		        name: "",
+		        occupation: "",
+		        school: "",
+		        company: "",
+		        position: "",
+		        job: "",
+		        selfIntro: ""
+		    },
+		    experience: [],
+		    education: [],
+		    skills: [],
+		    courses: [],
+		    projects: [],
+		    languages: [],
+		    tests: []
+		});
+		newProfile.save(function(err){
+		    if(err)
+		        console.log(err);
+		});
 });
 
 router.get('/signup', function(req, res, next) {
