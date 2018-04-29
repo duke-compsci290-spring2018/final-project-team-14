@@ -9,6 +9,10 @@ var passport = require('passport');
 var session = require('express-session')
 var cors = require('cors')
 var config = require('./config/database');
+const Guid = require('guid');
+const sha256 = require('sha256');
+const jwt = require('jsonwebtoken');
+const fetch = require('node-fetch');
 const mongoose = require('mongoose');
 mongoose.connect(config.database);
 
@@ -46,7 +50,6 @@ User.findOne({username: ADMIN_EMAIL}, function(err, user){
             lastName: "admin",
             isEmployer: false,
             isAdmin: true,
-            facebook_id: "0"
         });
         console.log("Creating admin...");
         newUser.save(function(err) {
@@ -283,5 +286,10 @@ app.get('/chat', function(req, res,next) {
     res.sendFile(__dirname+'/views/chat.html');
 });
 server.listen(8082);
+
+
+
+
+
 
 module.exports = app;
