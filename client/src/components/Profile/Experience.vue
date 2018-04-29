@@ -148,6 +148,10 @@ export default {
     }
   },
 
+  updated() {
+  	console.log(this.expData[0].title);
+  },
+
   methods: {
   	add() {
   		var exp = {
@@ -159,6 +163,7 @@ export default {
 			work: this.newExp.work 			
   		};
   		this.expData.push(exp);
+  		this.trigger();
   		this.clearAddModal();
   	},
 
@@ -170,10 +175,16 @@ export default {
 
   	remove(index) {
   		this.expData.splice(index, 1);
+  		this.trigger();
   	},
 
   	edit() {
+  		this.trigger();
   		console.log('Edit experience');
+  	},
+
+  	trigger() {
+  		this.$emit('expChanged', this.expData);
   	}
   }
 }

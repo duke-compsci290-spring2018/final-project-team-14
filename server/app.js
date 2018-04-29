@@ -86,8 +86,6 @@ newProfile.save(function(err){
 });
 */
 
-
-
 Profile.findOne({username: "5@gmail.com"}, function(err, data){
     if(!data){
 var newProfile = new Profile({
@@ -182,6 +180,7 @@ newProfile.save(function(err){
 });
     }
 });
+
 
 // set up socket io
 var server = app.listen(3000);

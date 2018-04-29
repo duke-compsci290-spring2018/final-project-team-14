@@ -1,11 +1,11 @@
 <template>
 	<div class="main">
 		<h1>Profile</h1>
-		<Summary :summary-data="profile.summary"></Summary>
-		<Experience :exp-data="profile.experience"></Experience>
-		<Education :edu-data="profile.education"></Education>
-		<Skills :skill-data="profile.skills"></Skills>
-		<Accomplishments :accomp-data="profile.accomplishments"></Accomplishments>
+		<Summary :summary-data="profile.summary" @summaryChanged="updateData"></Summary>
+		<Experience :exp-data="profile.experience" @expChanged="updateData"></Experience>
+		<Education :edu-data="profile.education" @eduChanged="updateData"></Education>
+		<Skills :skill-data="profile.skills" @skillChanged="updateData"></Skills>
+		<Accomplishments :accomp-data="profile.accomplishments" @accompChanged="updateData"></Accomplishments>
 	</div>
 </template>
 
@@ -28,7 +28,6 @@ export default {
       .then(response =>{
         this.profile = response.data;
         console.log(this.profile);
-        //console.log(response.data.summary.name);
       })
       .catch(e => {
         this.errors.push(e);
@@ -39,13 +38,13 @@ export default {
     return {
       profile: {
         summary: {
-          name: "",
-          occupation: "",
-          school: "",
-          company: "",
-          position: "",
-          job: "",
-          selfIntro: ""
+          name: '',
+          occupation: '',
+          school: '',
+          company: '',
+          position: '',
+          job: '',
+          selfIntro: ''
         },
         experience: [],
         education: [],
@@ -61,7 +60,7 @@ export default {
   },
 
   components: {
-  	Summary, 
+  	Summary,
   	Experience, 
   	Education, 
   	Skills, 
@@ -69,14 +68,24 @@ export default {
   },
 
   methods: {
+    updateData(data) {
+      console.log(data);
+      axios('http://127.0.0.1:8081/users/test', {
+        method: "post",
+        data: {profile: this.profile}
+      })
+      .then(response =>{
+        console.log(response);
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
+    },
+
   	test() {
   		console.log("data:");
   		console.log(this.profile.experience);
   	}
-  },
-
-  updated() {
-    console.log("Opreation happens!");
   }
 }
 </script>
@@ -86,6 +95,7 @@ export default {
 	margin-left: 20%;
 	margin-right: 20%;
 }
+
 h1 {
 	text-align: center;
 }

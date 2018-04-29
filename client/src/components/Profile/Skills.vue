@@ -65,6 +65,7 @@ export default {
   methods: {
   	add() {
   		this.skillData.push(this.skill);
+  		this.trigger();
   		this.clear();
   	},
 
@@ -74,10 +75,11 @@ export default {
 
   	remove(index) {
   		this.skillData.splice(index, 1);
+  		this.trigger();
   	},
 
-  	edit() {
-  		console.log('Edit summary');
+  	trigger() {
+  		this.$emit('skillChanged', this.skillData);
   	}
   }
 }
