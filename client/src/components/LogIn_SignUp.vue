@@ -9,6 +9,7 @@
         <input class="form-control mr-sm-2" type="password" placeholder="Password" v-model="password" required>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign In</button>
       </form>
+      <router-link role ="button" class="nav-item nav-link btn btn-outline-secondary" :to="{ path: 'guest' }">Guest</router-link>
       <router-link role ="button" class="nav-item nav-link btn btn-outline-success" :to="{ path: 'adminLogin' }">Administrator</router-link>
     </nav>
     <div class="body">
