@@ -1,5 +1,21 @@
 <template>
   <div class="main">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Duke_Athletics_logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ml-auto">
+        <router-link class="nav-item nav-link active" :to="{ path: '/main' }" @click.native="disconnect">Home</router-link>
+        <router-link class="nav-item nav-link" :to="{ path: '/user/profile' }" @click.native="disconnect">Profile</router-link>
+        <router-link class="nav-item nav-link" :to="{ path: '/chatroom' }">Chatroom</router-link>
+        <a class="nav-item nav-link" v-on:click="signOut">Sign Out</a>
+      </div>
+    </div>
+  </nav>
       <div>
         <div v-if="chatting">
           <div v-for="item in megs" id="m">
@@ -28,10 +44,13 @@
 <script>
 import axios from 'axios'
 import config from '../config.js'
+import MainNav from './MainNav'
 
 export default {
   name: 'Chatroom',
-
+  components:{
+    MainNav
+  },
   data () {
     return {
       socket: '',
@@ -79,6 +98,25 @@ export default {
   },
 
   methods: {
+    signOut: function(){
+      axios(config.domain + ':8081/logout', {
+        method: "get",
+        withCredentials: true
+      })
+      .then(response =>{
+        this.$router.push({ path: `/`});
+        this.socket.close();
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
+    },
+
+    disconnect() {
+      console.log(this.socket);
+      this.socket.close();
+    },
+
     beginChat() {
       this.chatting = true;
       var that = this;

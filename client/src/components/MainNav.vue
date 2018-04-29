@@ -8,8 +8,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ml-auto">
-        <router-link class="nav-item nav-link active" :to="{ path: '/main' }">Home</router-link>
-        <router-link class="nav-item nav-link" :to="{ path: '/user/profile' }">Profile</router-link>
+        <router-link class="nav-item nav-link active" :to="{ path: '/main' }" >Home</router-link>
+        <router-link class="nav-item nav-link" :to="{ path: '/user/profile' }" >Profile</router-link>
+        <router-link class="nav-item nav-link" :to="{ path: '/chatroom' }" >Chatroom</router-link>
         <a class="nav-item nav-link" v-on:click="signOut">Sign Out</a>
       </div>
     </div>
