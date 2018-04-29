@@ -36,6 +36,7 @@ export default {
     return {
       socket: '',
       user: '',
+      name: '',
       message: '',
       megs: [],
       chatting: false
@@ -45,13 +46,14 @@ export default {
   created() {
     var that = this;
     console.log("chat room created()");
-    axios(config.domain + ':8081/users/profile', {
+    axios(config.domain + ':8081/users/chat', {
         method: "get",
         withCredentials: true
       })
       .then(response =>{
-        console.log(response.data.summary.name);
-        this.user = response.data.summary.name;
+        console.log(response.data.data.username);
+        this.user = response.data.data.username;
+        this.name = response.data.data.firstName + ' ' + response.data.data.lastName;
 
         this.socket = io(config.domain + ':8082');
         this.socket.emit('login', {userName: this.user});
@@ -107,7 +109,7 @@ export default {
 
     sendMessage() {
       if (this.message) {
-        this.socket.emit('sendMessage', {userName: this.user, message: this.message, self: false});
+        this.socket.emit('sendMessage', {userName: this.name, message: this.message, self: false});
         this.message = '';
       }
     }
