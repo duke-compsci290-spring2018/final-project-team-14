@@ -102,7 +102,7 @@
 
 			                    <div class="modal-footer">
 			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="edit">Submit</button>
-			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="remove(index)">Cancel</button>
+			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="remove(index)">Delete</button>
 			                    </div>
 
 			                </div>

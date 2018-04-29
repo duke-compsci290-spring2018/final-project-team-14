@@ -184,6 +184,7 @@
 			<h4>Projects</h4>
 			<div v-for="(item, index) in accompData.projects" :key="index" class="project">
 				<div class="mt-4">
+					<hr/>
 					<div class="edit-btn">					
 						<button type="button" class="btn btn-outline-light btn-sm" data-toggle="modal" :data-target="'#project' + index">Edit</button>
 					</div>
@@ -310,7 +311,7 @@
 						<button type="button" class="btn btn-outline-light btn-sm" data-toggle="modal" :data-target="'#test' + index">Edit</button>
 					</div>
 					<div>{{item.name}}: {{item.score}}</div>
-					
+
 					<!-- modal -->
 			        <div class="modal fade bd-example-modal-lg" :id="'test' + index" role="dialog">
 			            <div class="modal-dialog modal-dialog-centered modal-lg">

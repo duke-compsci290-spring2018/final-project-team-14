@@ -170,7 +170,7 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
     User.findOne({username: req.body.username}, function(err, user){
 
         if(req.body.isAdd) {
-            Employer.findOneAndUpdate({username: req.user.username}, {$push: {employees: {username: user.username, status: "created"}}}, function(error, success){
+            Employer.findOneAndUpdate({username: req.user.username}, {$push: {employees: {username: req.body.username, status: "created"}}}, function(error, success){
                 if(err){
                     res.send(JSON.stringify({success: false}));
                 }else{
@@ -178,7 +178,7 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
                 }
             });
         }else{
-            Employer.findOneAndUpdate({username: req.user.username}, {$pull: {employees: {username: username}}}, function(error, success){
+            Employer.findOneAndUpdate({username: req.user.username}, {$pull: {employees: {username: req.body.username}}}, function(error, success){
                 if(err){
                     res.send(JSON.stringify({success: false}));
                 }else{
