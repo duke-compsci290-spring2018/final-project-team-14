@@ -101,7 +101,6 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
                 return res.send(JSON.stringify(ret));
             }
             //get all its candidates and make separation...
-            console.log(emp);
             var list = emp.employees;
             var nameList = [];
             var statusList = [];
@@ -170,10 +169,12 @@ router.get("/search", function(req, res, next) {
 
 router.post('/candidate', isAuthenticated, function(req, res, next) {
     Employer.findOne({username: req.user.username}, function(err, emp){
+        console.log(err);
         if(req.body.isAdd){
             emp.employees.push(req.body.username);
             emp.save(function(err){
                 if(err){
+                    console.log(err);
                     res.send(JSON.stringify({success: false}));
                 }else{
                     res.send(JSON.stringify({success: true}));
@@ -184,13 +185,13 @@ router.post('/candidate', isAuthenticated, function(req, res, next) {
             emp.employees.splice(ind, 1);
             emp.save(function(err){
                 if(err){
+                    console.log(err);
                     res.send(JSON.stringify({success: false}));
                 }else{
                     res.send(JSON.stringify({success: true}));
                 }
             });
         }
-        console.log(emp);
     });
 
     //User.findOne({username: req.body.username}, function(err, user){
