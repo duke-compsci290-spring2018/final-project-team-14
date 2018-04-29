@@ -72,14 +72,15 @@
       <h4 class="text-center">Candidate List</h4>
       <ul>
         <li v-for="(candidate, index) in candidates" :key = "candidate.username" class="mr-1 mt-1">
-          <div class="card" style="width: 15rem;" >
+          <div class="card" style="width: 20rem;" >
             <div class="card-body">
               <h5>{{candidate["user"]["firstName"]}} {{candidate["user"]["lastName"]}}</h5>
               <h6>{{candidate["status"]}}</h6>
             </div>
             <div class="card-footer">
               <button role ="button" class="btn btn-info" data-toggle="modal" :data-target="'#model' + index" @click = "get_employee_info(candidate.user)">View Info</button>
-              <button class="btn btn-success" @click="delete_candidate(candidate)">Delete</button>
+              <button role ="button" class="btn btn-success">Skype</button>
+              <button class="btn btn-danger" @click="delete_candidate(candidate)">Delete</button>
             </div>
           </div>
         </li>
