@@ -279,8 +279,7 @@ export default {
       })
     },
     get_employee_info: function(user){
-      console.log(user)
-      axios(config.domain + ':8081/users/profile/${user["username"]}', {
+      axios(config.domain + `:8081/users/profile/${user["username"]}`, {
         method: "get"
       })
       .then(response =>{
