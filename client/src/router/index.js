@@ -6,7 +6,7 @@ import adminLogin from '@/components/adminLogin'
 import adminMain from '@/components/adminMain'
 import Profile  from '@/components/Profile/Profile'
 import Test from '@/components/Test'
-import Chatroom from '@/components/chatroom'
+import Chatroom from '@/components/Chatroom'
 import Guest from '@/components/Guest'
 
 Vue.use(Router)
