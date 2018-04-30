@@ -2,6 +2,15 @@
 <template>
   <div>
     <MainNav/>
+    <div class="form-group text-center mt-2">
+      <label for="color">Select Background Color</label>
+      <select class="form-control" v-model="color">
+        <option value = "blue">Blue</option>
+        <option value = "red">Red</option>
+        <option value = "Green">Green</option>
+        <option value = "White">White</option>
+      </select>
+    </div>
     <div class="mt-2" v-if='isEmployee'>
       <h4 class="text-center">My Interviews</h4>
         <ul>
@@ -150,7 +159,8 @@ export default {
       users: null,
       candidates: null,
       employee_info: null,
-      interviews: null
+      interviews: null,
+      color: null
 
     }
   },
@@ -177,6 +187,8 @@ export default {
         this.$router.push({ path: `/`});
       }
       else{
+        this.color = response["data"]["data"]["user"]["color"];
+        document.body.style.background = this.color;
         this.user_info = response["data"]["data"]["user"];
         this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
 
@@ -200,6 +212,21 @@ export default {
       this.errors.push(e);
     });
   },
+  watch:{
+    color: function(){
+      axios(config.domain + ':8081/color', {
+        method: "post",
+        withCredentials: true,
+        data: {color: this.color}
+      })
+      .then(response => {
+        document.body.style.background = this.color;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
+    }
+  },
   components:{
     MainNav,
     Job
@@ -212,7 +239,7 @@ export default {
         data: {username: candidate["user"]["username"] , date: candidate.date}
       })
       .then(response =>{
-        axios('http://127.0.0.1:8081/profile', {
+        axios(config.domain + ':8081/profile', {
           method: "get",
           withCredentials: true
         })
@@ -222,20 +249,25 @@ export default {
             this.$router.push({ path: `/`});
           }
           else{
+            this.color = response["data"]["data"]["user"]["color"];
+            document.body.style.background = this.color;
             this.user_info = response["data"]["data"]["user"];
             this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
-            this.candidates = response["data"]["data"]["list"];
-            // get the user
-            axios('http://127.0.0.1:8081/admin', {
-              method: "get",
-              withCredentials: true
-            })
-            .then(response => {
-              this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
-            })
-            .catch(e => {
-              this.errors.push(e);
-            });
+
+            this.interviews = response["data"]["data"]["list"];
+            if (!this.isEmployee){
+              this.candidates = response["data"]["data"]["list"];
+              axios(config.domain + ':8081/admin', {
+                method: "get",
+                withCredentials: true
+              })
+              .then(response => {
+                this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
+              })
+              .catch(e => {
+                this.errors.push(e);
+              });
+            }
           }
         })
         .catch(e => {
