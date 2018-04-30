@@ -29,6 +29,7 @@
 <script>
 import Job from "./Job.vue";
 import axios from 'axios';
+import config from "../config.js"
 axios.defaults.withCredentials=true;
 export default {
   name: 'Guest',
@@ -44,7 +45,7 @@ export default {
   },
   methods: {
     search: function(){
-      axios('http://127.0.0.1:8081/search', {
+      axios(config.domain + ':8081/search', {
         method: "get",
         params: { position: this.search_position, location: this.search_location}
       })
