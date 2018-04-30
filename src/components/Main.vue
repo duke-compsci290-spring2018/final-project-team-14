@@ -17,11 +17,13 @@
           <li v-for = "interview in interviews">
             <div class="card" style="width: 18rem;">
               <div class="card-body">
-                <h5 class="card-title">{{interview["name"]}}</h5>
-                <h6 class="card-title">{{interview["company"]}}</h6>
+                <h5 class="card-title"><b>Employer: </b> {{interview["name"]}}</h5>
+                <h6 class="card-title"><b>Company: </b> {{interview["company"]}}</h6>
+                <label><b>Interview Link: </b></label>
                 <p class="card-text">
                   {{interview["url"]}}
                 </p>
+                <label><b>Interview Date: </b></label>
                 <p class="card-text">
                   {{interview["date"]}}
                 </p>
@@ -41,7 +43,7 @@
       </li>
     </ul>
     <div class="mt-2" v-else>
-      <h4 class="text-center">Employee List</h4>
+      <h4 class="text-center">User List</h4>
       <ul>
         <li v-for="(user, index) in users" :key = "index" class="mr-1 mt-1">
           <div class="card" style="width: 15rem;" >
