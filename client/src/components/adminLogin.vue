@@ -80,7 +80,7 @@ export default {
 <style scoped>
 .body{
   height: 85vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../assets/admin.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://github.com/Kazuya93/tmpFront/blob/master/dist/admin.jpg");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
