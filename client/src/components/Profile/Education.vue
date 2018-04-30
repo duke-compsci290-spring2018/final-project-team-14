@@ -19,8 +19,8 @@
                     <div class="modal-body">
                         <form>
                             <div class="input-group my-2">
-                                <div class="input-group-prepend"><span class="input-group-text">Name</span></div>
-                                <input type="text" name="name" placeholder="Your Name" class="form-control" v-model="newEdu.name">
+                                <div class="input-group-prepend"><span class="input-group-text">School Name</span></div>
+                                <input type="text" name="schoolName" placeholder="School Name" class="form-control" v-model="newEdu.name">
                             </div>
 
                             <div class="input-group my-2">
@@ -74,8 +74,8 @@
 			                    <div class="modal-body">
 			                        <form>
 			                            <div class="input-group my-2">
-			                                <div class="input-group-prepend"><span class="input-group-text">Name</span></div>
-			                                <input type="text" name="name" placeholder="Your Name" class="form-control" v-model="eduData[index].name">
+			                                <div class="input-group-prepend"><span class="input-group-text">School Name</span></div>
+			                                <input type="text" name="schoolName" placeholder="School Name" class="form-control" v-model="eduData[index].name">
 			                            </div>
 
 			                            <div class="input-group my-2">

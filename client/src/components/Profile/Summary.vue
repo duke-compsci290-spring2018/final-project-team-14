@@ -112,25 +112,12 @@ export default {
   
   data () {
     return {
-    	c: {
-	      // avatar: require("../../assets/kedaya.png"),
-	      name: this.summaryData.name,
-	      occupation: this.summaryData.occupation,
-	      school: this.summaryData.school,
-	      company: this.summaryData.company,
-	      position: this.summaryData.position,
-	      job: this.summaryData.job,
-	      selfIntro: this.summaryData.selfIntro    		
-    	}
 
-        // fileName: 'Choose local file...'
     }
   },
 
   created() {
-  	for (var prop in this.c) {
-  		console.log();
-  	}
+
   },
 
   computed: {
@@ -148,10 +135,6 @@ export default {
   },
 
   methods: {
-  	// changeAvatar() {
-  	// 	console.log('Change avatar');
-  	// },
-
   	// processFile(event) {
   	// 	this.avatar = event.target.files[0];
   	// 	this.fileName = event.target.value;
@@ -159,14 +142,15 @@ export default {
 
   	edit() {
   		console.log('Edit summary');
-		for (var prop in this.summaryData) {
-			this.summaryData[prop] = this.cur[prop];
-		}
+		// for (var prop in this.summaryData) {
+		// 	this.summaryData[prop] = this.cur[prop];
+		// }
+		//this.summaryData = this.cur;
 		this.trigger();
   	},
 
   	trigger() {
-  		this.$emit('summaryChanged', this.summaryData);
+  		this.$emit('summaryChanged', this.cur);
   	}
   }
 }

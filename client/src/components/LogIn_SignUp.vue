@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand col-md-5 col-5" href="#">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Duke_Athletics_logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Duke_Athletics_logo.svg" width="30" height="30" class="d-inline-block align-top" alt="Duke icon">
       </a>
       <form class="form-inline" v-on:submit.prevent="logIn">
         <input class="form-control mr-sm-2" type="email" placeholder="Username" v-model="userName" required>
@@ -41,7 +41,8 @@
               <input type="text" class="form-control" id="company" v-model="company" required>
             </div>
             <div class="form-group">
-              <select class="custom-select" required v-model="category">
+              <label for="identity">Identity</label>
+              <select class="custom-select" id="identity" required v-model="category">
                 <option value="1">Employee</option>
                 <option value="2">Employer</option>
               </select>
