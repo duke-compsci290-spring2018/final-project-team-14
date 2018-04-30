@@ -52,9 +52,10 @@ router.post('/signup', function(req, res, next) {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         isEmployer: isEmployer,
+        company: req.body.company,
+        color: 'white',
         isAdmin: false,
-        facebook_id: req.body.facebook_id,
-        skype_id: req.body.skype_id
+        facebook_id: req.body.facebook_id
     });
     newUser.save(function(err) {
         if (err) {
@@ -69,7 +70,9 @@ router.post('/signup', function(req, res, next) {
     if(newUser.isEmployer) {
         var newEmp = new Employer({
             username: newUser.username,
-            employees: []
+            employees: [],
+            name: {first: req.body.firstName, last: req.body.lastName},
+            company: req.body.company
         });
         newEmp.save();
     }
@@ -103,6 +106,20 @@ router.get('/signup', function(req, res, next) {
 	res.render('signup', { title: 'Express' });
 });
 
+router.post('/color', isAuthenticated, function(req, res, next) {
+    User.findOne({username: req.user.username}, function(err, user){
+        user.color = req.body.color;
+        user.save(function(err){
+            if(err){
+                console.log(err);
+                res.send(JSON.stringify({ success: false }));
+            }else{
+                res.send(JSON.stringify({ success: true }));
+            }
+        });
+    });
+});
+
 router.get('/profile', isAuthenticated, function(req, res, next) {
     var ret = {};
     User.findOne({username: req.user.username}, function(err, user) {
@@ -117,44 +134,67 @@ router.get('/profile', isAuthenticated, function(req, res, next) {
         if(!user.isEmployer) {
             ret.success = true;
             ret.data = data;
-            return res.send(JSON.stringify(ret));
-        }
-        //employer profile should query all its candidates
-        Employer.findOne({username: user.username}, function(err, emp){
-            //error handling...
-            if(err || !emp){
-                ret.success = false;
-                return res.send(JSON.stringify(ret));
-            }
-            //get all its candidates and make separation...
-            var list = emp.employees;
-            var nameList = [];
-            var statusList = [];
-            for(var i=0;i<list.length;i++){
-                nameList.push(list[i].username);
-                statusList.push(list[i].status);
-            }
-            //find all users and compare the username
-            User.find({}, function(err, users){
-                //error handling...
-                if(err || !users){
-                    ret.success = false;
-                    return res.send(JSON.stringify(ret));
-                }
-                //
-                data.list = [];
-                for(var i=0;i<users.length;i++){
-                    var tmp = nameList.indexOf(users[i].username);
-                    if(tmp >= 0){
-                        console.log(users[i]);
-                        data.list.push({user: users[i], status: statusList[tmp]});
+            Employer.find({}, function(err, emps){
+                let retList = [];
+                for(let i=0;i<emps.length;i++){
+                    var list = emps[i].employees;
+                    for(let j=0;j<list.length;j++){
+                        if(list[j].username === req.user.username){
+                            retList.push({
+                                name: emps[i].name.first+" "+emps[i].name.last,
+                                company: emps[i].company,
+                                url: list[j].url,
+                                date: list[j].date
+                            })
+                            break;
+                        }
                     }
                 }
-                ret.data = data;
-                ret.success = true;
+                ret.data.list = retList;
                 return res.send(JSON.stringify(ret));
             });
-        });
+        }else{
+					//employer profile should query all its candidates
+	        Employer.findOne({username: user.username}, function(err, emp){
+	            //error handling...
+	            if(err || !emp){
+	                ret.success = false;
+	                return res.send(JSON.stringify(ret));
+	            }
+	            //get all its candidates and make separation...
+	            var list = emp.employees;
+	            var nameList = [];
+	            var statusList = [];
+	            var urlList = [];
+	            var dateList = [];
+	            for(var i=0;i<list.length;i++){
+	                nameList.push(list[i].username);
+	                statusList.push(list[i].status);
+	                urlList.push(list[i].url);
+	                dateList.push(list[i].date);
+	            }
+	            //find all users and compare the username
+	            User.find({}, function(err, users){
+	                //error handling...
+	                if(err || !users){
+	                    ret.success = false;
+	                    return res.send(JSON.stringify(ret));
+	                }
+	                //
+	                data.list = [];
+	                for(var i=0;i<users.length;i++){
+	                    var tmp = nameList.indexOf(users[i].username);
+	                    if(tmp >= 0){
+	                        console.log(users[i]);
+	                        data.list.push({user: users[i], status: statusList[tmp], url: urlList[tmp], date: dateList[tmp]});
+	                    }
+	                }
+	                ret.data = data;
+	                ret.success = true;
+	                return res.send(JSON.stringify(ret));
+	            });
+	        });
+				}
     });
 });
 

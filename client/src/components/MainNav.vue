@@ -8,9 +8,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ml-auto">
-        <router-link class="nav-item nav-link active" :to="{ path: '/main' }">Home</router-link>
-        <a class="nav-item nav-link" href="#">Interview</a>
-        <router-link class="nav-item nav-link" :to="{ path: '/user/profile' }">Profile</router-link>
+        <router-link class="nav-item nav-link active" :to="{ path: '/main' }" >Home</router-link>
+        <router-link class="nav-item nav-link" :to="{ path: '/user/profile' }" >Profile</router-link>
+        <router-link class="nav-item nav-link" :to="{ path: '/chatroom' }" >Chatroom</router-link>
         <a class="nav-item nav-link" v-on:click="signOut">Sign Out</a>
       </div>
     </div>
@@ -19,6 +19,8 @@
 
 <script>
 import axios from 'axios';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 export default {
   name: 'MainNav',
@@ -28,7 +30,7 @@ export default {
   },
   methods:{
     signOut: function(){
-      axios('http://127.0.0.1:8081/logout', {
+      axios(config.domain + ':8081/logout', {
         method: "get",
         withCredentials: true
       })

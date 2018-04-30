@@ -40,6 +40,8 @@
 
 <script>
 import axios from 'axios';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 export default {
   name: 'adminLogin',
@@ -53,7 +55,7 @@ export default {
   },
   methods:{
     signIn: function(){
-      axios('http://127.0.0.1:8081/admin/auth', {
+      axios(config.domain + ':8081/admin/auth', {
         method: "post",
         data: { username: this.userName, password: this.password }
       })

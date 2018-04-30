@@ -9,10 +9,6 @@ var passport = require('passport');
 var session = require('express-session')
 var cors = require('cors')
 var config = require('./config/database');
-const Guid = require('guid');
-const sha256 = require('sha256');
-const jwt = require('jsonwebtoken');
-const fetch = require('node-fetch');
 const mongoose = require('mongoose');
 mongoose.connect(config.database);
 
@@ -60,9 +56,9 @@ User.findOne({username: ADMIN_EMAIL}, function(err, user){
         });
     }
 });
-
-var Profile = require("./models/profile");
 /*
+var Profile = require("./models/profile");
+
 var newProfile = new Profile({
     username: "null@gmail.com",
 
@@ -87,7 +83,7 @@ newProfile.save(function(err){
     if(err)
         console.log(err);
 });
-*/
+
 
 Profile.findOne({username: "5@gmail.com"}, function(err, data){
     if(!data){
@@ -183,7 +179,7 @@ newProfile.save(function(err){
 });
     }
 });
-
+*/
 
 
 // user authentication and session
@@ -263,13 +259,13 @@ var usernames = [];
 
 io.on('connection', (socket) => {
     console.log('New client connected...');
-    var username;
+    var userName;
     socket.on('login', (data) => {
-        if(usernames.indexOf(data.username) > 0){
+        if(usernames.indexOf(data.userName) > 0){
             socket.emit('loginFail', '');
         }else{
-            username = data.username;
-            usernames.push(username);
+            userName = data.userName;
+            usernames.push(userName);
             socket.emit('loginSuccess', data);
             io.sockets.emit('add', data);
         }
@@ -278,18 +274,13 @@ io.on('connection', (socket) => {
         io.sockets.emit('receiveMessage', data);
     });
     socket.on('disconnect', () => {
-        io.sockets.emit('leave', username);
-        usernames.splice(usernames.indexOf(username), 1);
+        io.sockets.emit('leave', userName);
+        usernames.splice(usernames.indexOf(userName), 1);
     });
 });
 app.get('/chat', function(req, res,next) {
     res.sendFile(__dirname+'/views/chat.html');
 });
 server.listen(8082);
-
-
-
-
-
 
 module.exports = app;

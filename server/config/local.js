@@ -22,9 +22,10 @@ passport.use(new LocalStrategy({
                         console.log(err);
                     }
                     return done(null, false);
+                }else{
+                    return done(null, user);
                 }
             });
-            return done(null, user);
         });
     }
 ));

@@ -24,10 +24,10 @@ const UserSchema = new Schema({
     isAdmin: {
         type: Boolean
     },
-    facebook_id: {
+    color: {
         type: String
     },
-    skype_id: {
+    facebook_id: {
         type: String
     }
 });

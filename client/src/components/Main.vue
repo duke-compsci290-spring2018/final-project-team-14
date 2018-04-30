@@ -2,6 +2,25 @@
 <template>
   <div>
     <MainNav/>
+    <div class="mt-2" v-if='isEmployee'>
+      <h4 class="text-center">My Interviews</h4>
+        <ul>
+          <li v-for = "interview in interviews">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{interview["name"]}}</h5>
+                <h6 class="card-title">{{interview["company"]}}</h6>
+                <p class="card-text">
+                  {{interview["url"]}}
+                </p>
+                <p class="card-text">
+                  {{interview["date"]}}
+                </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+    </div>
     <form class="form-inline d-flex justify-content-center" v-on:submit.prevent="search" v-if='isEmployee'>
       <input type="text" class="form-control col-4" placeholder="Search Jobs" v-model="search_position">
       <input type="text" class="form-control col-4 ml-2" placeholder="Search Location" v-model="search_location">
@@ -75,12 +94,34 @@
           <div class="card" style="width: 20rem;" >
             <div class="card-body">
               <h5>{{candidate["user"]["firstName"]}} {{candidate["user"]["lastName"]}}</h5>
-              <h6>{{candidate["status"]}}</h6>
             </div>
             <div class="card-footer">
               <button role ="button" class="btn btn-info" data-toggle="modal" :data-target="'#model' + index" @click = "get_employee_info(candidate.user)">View Info</button>
               <button class="btn btn-danger" @click="delete_candidate(candidate)">Delete</button>
-              <button class="btn btn-success" @click="interview()">Interview</button>
+              <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#interview' + index">Interview</button>
+              <div class="modal fade" :id="'interview' + index">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <form @submit.prevent = "interview(candidate)">
+                        <div class="form-group">
+                          <label :for="'date' + index">Date</label>
+                          <input type="date" class="form-control" :id="'date' + index" v-model="candidate.date">
+                        </div>
+                        <div class="form-group">
+                          <label :for="'url' + index">Url</label>
+                          <input type="text" class="form-control" :id="'url' + index" v-model="candidate.url" disabled>
+                        </div>
+                        <button class="btn btn-success">Save</button>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </li>
@@ -94,6 +135,8 @@ import MainNav from "./MainNav.vue";
 import Job from "./Job.vue";
 import axios from 'axios';
 import $ from 'jquery';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 export default {
   name: 'Main',
@@ -107,7 +150,8 @@ export default {
       users: null,
       candidates: null,
       employee_info: null,
-      firstName:null
+      interviews: null
+
     }
   },
   created(){
@@ -123,7 +167,7 @@ export default {
       "education" : ""
     }
 
-    axios('http://127.0.0.1:8081/profile', {
+    axios(config.domain + ':8081/profile', {
       method: "get",
       withCredentials: true
     })
@@ -135,19 +179,21 @@ export default {
       else{
         this.user_info = response["data"]["data"]["user"];
         this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
-        this.candidates = response["data"]["data"]["list"];
 
-        // get the user
-        axios('http://127.0.0.1:8081/admin', {
-          method: "get",
-          withCredentials: true
-        })
-        .then(response => {
-          this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
-        })
-        .catch(e => {
-          this.errors.push(e);
-        });
+        this.interviews = response["data"]["data"]["list"];
+        if (!this.isEmployee){
+          this.candidates = response["data"]["data"]["list"];
+          axios(config.domain + ':8081/admin', {
+            method: "get",
+            withCredentials: true
+          })
+          .then(response => {
+            this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
+          })
+          .catch(e => {
+            this.errors.push(e);
+          });
+        }
       }
     })
     .catch(e => {
@@ -160,11 +206,41 @@ export default {
   },
   methods:{
     interview: function(candidate){
-      axios(`http://127.0.0.1:8081/users/create`, {
-        method: "get"
+      console.log(candidate);
+      axios(config.domain + ':8081/users/interview', {
+        method: "post",
+        data: {username: candidate["user"]["username"] , date: candidate.date}
       })
       .then(response =>{
-        console.log(response);
+        axios('http://127.0.0.1:8081/profile', {
+          method: "get",
+          withCredentials: true
+        })
+        .then(response =>{
+          console.log(response);
+          if (!response["data"]["success"]){
+            this.$router.push({ path: `/`});
+          }
+          else{
+            this.user_info = response["data"]["data"]["user"];
+            this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
+            this.candidates = response["data"]["data"]["list"];
+            // get the user
+            axios('http://127.0.0.1:8081/admin', {
+              method: "get",
+              withCredentials: true
+            })
+            .then(response => {
+              this.users = response["data"]["data"].filter(user => !user["isEmployer"]);
+            })
+            .catch(e => {
+              this.errors.push(e);
+            });
+          }
+        })
+        .catch(e => {
+          this.errors.push(e);
+        });
       })
       .catch(e => {
         this.errors.push(e);
@@ -172,7 +248,7 @@ export default {
     },
     get_employee_info: function(user){
       console.log(user)
-      axios(`http://127.0.0.1:8081/users/profile/${user["username"]}`, {
+      axios(config.domain + ':8081/users/profile/${user["username"]}', {
         method: "get"
       })
       .then(response =>{
@@ -183,7 +259,7 @@ export default {
       })
     },
     search: function(){
-      axios('http://127.0.0.1:8081/search', {
+      axios(config.domain + ':8081/search', {
         method: "get",
         params: { position: this.search_position, location: this.search_location}
       })
@@ -197,12 +273,12 @@ export default {
       })
     },
     add: function(candidate){
-      axios('http://127.0.0.1:8081/candidate', {
+      axios(config.domain + ':8081/candidate', {
         method: "post",
         data: { isAdd: true, username: candidate["username"]}
       })
       .then(response =>{
-        axios('http://127.0.0.1:8081/profile', {
+        axios(config.domain + ':8081/profile', {
           method: "get",
           withCredentials: true
         })
@@ -218,13 +294,13 @@ export default {
       })
     },
     delete_candidate: function(candidate){
-      axios('http://127.0.0.1:8081/candidate', {
+      axios(config.domain + ':8081/candidate', {
         method: "post",
         data: { isAdd: false, username: candidate["user"]["username"]}
       })
       .then(response =>{
         console.log(response);
-        axios('http://127.0.0.1:8081/profile', {
+        axios(config.domain + ':8081/profile', {
           method: "get",
           withCredentials: true
         })

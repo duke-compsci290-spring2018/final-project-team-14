@@ -1,15 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var Profile = require('../models/profile');
+var Employer = require('../models/employer');
+var User = require('../models/user');
 
 var sendEmail = require('../utils/email');
+
+function isAuthenticated(req, res, next) {
+	if(req.isAuthenticated()){
+		next();
+	}else{
+		res.redirect("/error");
+	}
+}
 
 router.get('/test', function(req, res, next) {
 	sendEmail('chengxinghao@hotmail.com', 'Sending Email using Node.js', 'That was easy!');
 	res.send("success");
 });
 
-router.post('/profile', function(req, res, next) {
+router.post('/profile', isAuthenticated, function(req, res, next) {
 	var profile = req.body.profile;
 	Profile.remove({username: req.user.username}, (err) => {
 		if(err){
@@ -37,7 +47,7 @@ router.post('/profile', function(req, res, next) {
 	});
 });
 
-router.get('/profile', function(req, res, next) {
+router.get('/profile', isAuthenticated, function(req, res, next) {
 	console.log(req.user.username);
 	Profile.findOne({username: req.user.username}, (err, data) => {
 	    ret = {};
@@ -55,7 +65,7 @@ router.get('/profile', function(req, res, next) {
 });
 
 //for employer, need check authorization
-router.get('/profile/:username', function(req, res, next) {
+router.get('/profile/:username', isAuthenticated, function(req, res, next) {
 	Profile.findOne({username: req.params.username}, (err, data) => {
 	    ret = {};
 	    ret.summary = data.summary;
@@ -71,35 +81,98 @@ router.get('/profile/:username', function(req, res, next) {
 	});
 });
 
+router.get('/chat', isAuthenticated, function(req, res, next) {
+	console.log(req.user.username);
+	User.findOne({username: req.user.username}, function(err, user){
+		ret = {};
+		if(err || !user){
+			ret.success = false;
+			if(err){
+				console.log(err);
+				ret.err = err;
+			}
+		}else{
+			ret.success = true;
+			ret.data = {username: user.username, firstName: user.firstName, lastName: user.lastName};
+		}
+		res.send(JSON.stringify(ret));
+	});
+});
+
 const Guid = require('guid');
 const sha256 = require('sha256');
 const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
+const config = require('../config/secret');
 
 function generateToken(content) {
     return jwt.sign({
         jti: Guid.raw(),
-        iss: 'c8e83a26-20ac-f885-62c6-7235831bdcc5',
+        iss: config.SKYPE_APP_ID,
         sub: sha256(content),
         exp: Math.floor(Date.now() / 1000) + 10
-    }, '08532387-96f8-181a-52e6-92ef5984f0ee');
+    }, config.SKYPE_APP_SECRET);
 }
 
-router.get('/create', function(req, res,next) {
-    const payload = {}
-    fetch('https://interviews.skype.com/api/interviews', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + generateToken(JSON.stringify(payload))
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-	.then((response) => {
-		var url = response.urls[0].url;
-        console.log(url);
-        res.send(url);
+router.post('/interview', isAuthenticated, function(req, res,next) {
+
+	var username = req.body.username;
+	var date = req.body.date;
+	console.log(username);
+	Employer.findOne({username: req.user.username}, function(err, emp){
+		var list = emp.employees;
+		for(let i=0;i<list.length;i++){
+			if(list[i].username === username){
+				if(list[i].date){	//has date
+					if(list[i].date === date){
+						res.send(JSON.stringify({ success: true }));
+					}else{
+						emp.employees[i].date = date;
+						const payload = {}
+					    fetch('https://interviews.skype.com/api/interviews', {
+					        method: 'POST',
+					        headers: {
+					            'Content-Type': 'application/json',
+					            'Authorization': 'Bearer ' + generateToken(JSON.stringify(payload))
+					        },
+					        body: JSON.stringify(payload)
+					    })
+					    .then(res => res.json())
+						.then((response) => {
+							var url = response.urls[0].url;
+					        console.log(url);
+					        emp.employees[i].url = url;
+									console.log(emp);
+					        emp.save(function(err){
+					        	res.send(JSON.stringify({ success: true }));
+					        });
+						});
+					}
+				}else{	//not has date
+					emp.employees[i].date = date;
+					const payload = {}
+				    fetch('https://interviews.skype.com/api/interviews', {
+				        method: 'POST',
+				        headers: {
+				            'Content-Type': 'application/json',
+				            'Authorization': 'Bearer ' + generateToken(JSON.stringify(payload))
+				        },
+				        body: JSON.stringify(payload)
+				    })
+				    .then(res => res.json())
+					.then((response) => {
+						var url = response.urls[0].url;
+				        console.log(url);
+				        emp.employees[i].url = url;
+								console.log(emp);
+				        emp.save(function(err){
+				        	res.send(JSON.stringify({ success: true }));
+						});
+				    });
+				}
+				break;
+			}
+		}
 	});
 });
 

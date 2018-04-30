@@ -9,6 +9,7 @@
         <input class="form-control mr-sm-2" type="password" placeholder="Password" v-model="password" required>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign In</button>
       </form>
+      <router-link role ="button" class="nav-item nav-link btn btn-outline-secondary" :to="{ path: 'guest' }">Guest</router-link>
       <router-link role ="button" class="nav-item nav-link btn btn-outline-success" :to="{ path: 'adminLogin' }">Administrator</router-link>
     </nav>
     <div class="body">
@@ -36,8 +37,8 @@
               <input type="password" class="form-control" id="password" v-model="signIn_password" required>
             </div>
             <div class="form-group">
-              <label for="skype">Skpye ID</label>
-              <input type="text" class="form-control" id="skype" v-model="skype_id" required>
+              <label for="company">Company</label>
+              <input type="text" class="form-control" id="company" v-model="company" required>
             </div>
             <div class="form-group">
               <select class="custom-select" required v-model="category">
@@ -64,6 +65,8 @@
 
 <script>
 import axios from 'axios';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 export default {
   name: 'LogIn_SignUp',
@@ -75,7 +78,7 @@ export default {
       lastName: null,
       category: null,
       email: null,
-      skype_id: null,
+      company: null,
       signIn_password:null
     }
   },
@@ -83,7 +86,7 @@ export default {
   },
   methods:{
     logIn: function(){
-      axios('http://127.0.0.1:8081/auth', {
+      axios(config.domain + ':8081/auth', {
         method: "post",
         data: { username: this.userName, password: this.password }
       })
@@ -102,7 +105,7 @@ export default {
       });
     },
     signUp: function(){
-      axios('http://127.0.0.1:8081/signup', {
+      axios(config.domain + ':8081/signup', {
         method: "post",
         data:{
           username: this.email,
@@ -110,7 +113,7 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           category: this.category,
-          skype_id: this.skype_id
+          company: this.company
         }
       })
       .then(response =>{

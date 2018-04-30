@@ -29,6 +29,8 @@
 
 <script>
 import axios from 'axios';
+import config from '../config.js'
+
 axios.defaults.withCredentials=true;
 
 export default {
@@ -39,7 +41,7 @@ export default {
     }
   },
   created(){
-      axios('http://127.0.0.1:8081/admin', {
+      axios(config.domain + ':8081/admin', {
         method: "get",
         withCredentials: true
       })
@@ -53,14 +55,14 @@ export default {
   },
   methods:{
     delete_user: function(username){
-      axios('http://127.0.0.1:8081/admin/delete', {
+      axios(config.domain + ':8081/admin/delete', {
         method: "post",
         data : {username: username}
       })
       .then(response => {
         if (response["data"]["success"]){
           console.log("1");
-          axios('http://127.0.0.1:8081/admin', {
+          axios(config.domain + ':8081/admin', {
             method: "get",
             withCredentials: true
           })
