@@ -70,11 +70,13 @@ export default {
         withCredentials: true
       })
       .then(response =>{
+        console.log(response);
         console.log(response.data.data.username);
         this.user = response.data.data.username;
         this.name = response.data.data.firstName + ' ' + response.data.data.lastName;
-
+        console.log("before");
         this.socket = io(config.domain + ':8082');
+        console.log("after");
         this.socket.emit('login', {userName: this.user});
 
          /*log in succeed*/

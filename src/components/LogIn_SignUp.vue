@@ -139,7 +139,7 @@ export default {
 <style scoped>
 .body{
   height: 85vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://github.com/Kazuya93/tmpFront/blob/master/dist/signIn.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://images.pexels.com/photos/684385/pexels-photo-684385.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;

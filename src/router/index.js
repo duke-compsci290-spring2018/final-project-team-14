@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import LogIn_SignUp from '@/components/LogIn_SignUp'
-import Main from '@/components/Main'
-import adminLogin from '@/components/adminLogin'
-import adminMain from '@/components/adminMain'
-import Profile  from '@/components/Profile/Profile'
-import Test from '@/components/Test'
-import Chatroom from '@/components/Chatroom'
-import Guest from '@/components/Guest'
+import LogIn_SignUp from '../components/LogIn_SignUp'
+import Main from '../components/Main'
+import adminLogin from '../components/adminLogin'
+import adminMain from '../components/adminMain'
+import Profile  from '../components/Profile/Profile'
+import Test from '../components/Test'
+import Chatroom from '../components/chatroom'
+import Guest from '../components/Guest'
 
 Vue.use(Router)
 
