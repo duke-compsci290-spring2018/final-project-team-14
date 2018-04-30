@@ -23,7 +23,7 @@ var app = express();
 
 //cors options
 app.use(cors({
-    origin:['http://localhost:8080', 'https://kazuya93.github.io'],
+    origin:['http://localhost:8080', 'https://kazuya93.github.io', 'https://duke-compsci290-spring2018.github.io'],
     methods:['GET','POST', 'OPTIONS'],
     alloweHeaders:['Content-Type', 'Authorization'],
     credentials: true
@@ -244,7 +244,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080, http://127.0.0.1:8080, https://kazuya93.github.io');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080, http://127.0.0.1:8080, https://kazuya93.github.io, https://duke-compsci290-spring2018.github.io');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
