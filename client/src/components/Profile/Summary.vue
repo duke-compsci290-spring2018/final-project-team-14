@@ -93,12 +93,12 @@
 			<div class="my-2">{{summaryData.occupation}}</div>
 			<div class="my-2">{{summaryData.school}}</div>
 			<div class="my-2">{{summaryData.company}}</div>
-			<div class="my-2">{{summaryData.position}}</div>			
+			<div class="my-2">{{summaryData.position}}</div>
 		</div>
 		<div class="intro-section">
-			<hr/>			
+			<hr/>
 		</div>
-		<p class="self-intro">{{summaryData.selfIntro}}</p>	
+		<p class="self-intro">{{summaryData.selfIntro}}</p>
 
 	</div>
 </template>
@@ -109,7 +109,7 @@ export default {
   name: 'Summary',
 
   props: ['summaryData'],
-  
+
   data () {
     return {
 
@@ -129,7 +129,7 @@ export default {
 	      company: this.summaryData.company,
 	      position: this.summaryData.position,
 	      job: this.summaryData.job,
-	      selfIntro: this.summaryData.selfIntro    		
+	      selfIntro: this.summaryData.selfIntro
     	}
   	}
   },
@@ -174,7 +174,7 @@ export default {
 }
 
 .self-intro {
-	margin: 2% 25%; 
+	margin: 2% 25%;
 }
 
 .edit-btn {

@@ -14,12 +14,17 @@ function isAuthenticated(req, res, next) {
 	}
 }
 
+function onInterviewChange(username, url){
+	sendEmail(username, 'Your interview information changed', 'Your interview event has been changed. Check it out now!\nThe Link is '+url);
+
+}
+
 router.get('/test', function(req, res, next) {
 	sendEmail('chengxinghao@hotmail.com', 'Sending Email using Node.js', 'That was easy!');
 	res.send("success");
 });
 
-router.post('/profile', function(req, res, next) {
+router.post('/profile', isAuthenticated, function(req, res, next) {
 	var profile = req.body.profile;
 	Profile.remove({username: req.user.username}, (err) => {
 		if(err){
@@ -47,7 +52,7 @@ router.post('/profile', function(req, res, next) {
 	});
 });
 
-router.get('/profile', function(req, res, next) {
+router.get('/profile', isAuthenticated, function(req, res, next) {
 	console.log(req.user.username);
 	Profile.findOne({username: req.user.username}, (err, data) => {
 	    ret = {};
@@ -65,7 +70,7 @@ router.get('/profile', function(req, res, next) {
 });
 
 //for employer, need check authorization
-router.get('/profile/:username', function(req, res, next) {
+router.get('/profile/:username', isAuthenticated, function(req, res, next) {
 	Profile.findOne({username: req.params.username}, (err, data) => {
 	    ret = {};
 	    ret.summary = data.summary;
@@ -145,6 +150,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 									console.log(emp);
 					        emp.save(function(err){
 					        	res.send(JSON.stringify({ success: true }));
+					        	onInterviewChange(username, url);
 					        });
 						});
 					}
@@ -167,6 +173,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 								console.log(emp);
 				        emp.save(function(err){
 				        	res.send(JSON.stringify({ success: true }));
+				        	onInterviewChange(username, url);
 						});
 				    });
 				}
