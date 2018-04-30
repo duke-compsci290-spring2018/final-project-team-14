@@ -14,6 +14,10 @@ function isAuthenticated(req, res, next) {
 	}
 }
 
+function onInterviewChange(username){
+	sendEmail(username, 'Your interview information changed', 'Your interview event has been changed. Check it out now!');
+}
+
 router.get('/test', function(req, res, next) {
 	sendEmail('chengxinghao@hotmail.com', 'Sending Email using Node.js', 'That was easy!');
 	res.send("success");
@@ -145,6 +149,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 									console.log(emp);
 					        emp.save(function(err){
 					        	res.send(JSON.stringify({ success: true }));
+					        	onInterviewChange(username);
 					        });
 						});
 					}
@@ -167,6 +172,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 								console.log(emp);
 				        emp.save(function(err){
 				        	res.send(JSON.stringify({ success: true }));
+				        	onInterviewChange(username)
 						});
 				    });
 				}
