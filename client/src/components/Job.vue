@@ -4,7 +4,7 @@
     <div class="card-body">
       <h5>{{info["title"]}}</h5>
       <h6>{{info["company"]}}</h6>
-      <h6>{{info["location"]}}</h6>
+      <p>{{info["location"]}}</p>
     </div>
     <div class="card-footer">
       <a role ="button" class="btn btn-primary" :href="info.url" target="_blank">Apply</a>

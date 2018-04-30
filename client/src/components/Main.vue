@@ -79,8 +79,8 @@
             </div>
             <div class="card-footer">
               <button role ="button" class="btn btn-info" data-toggle="modal" :data-target="'#model' + index" @click = "get_employee_info(candidate.user)">View Info</button>
-              <button role ="button" class="btn btn-success">Skype</button>
               <button class="btn btn-danger" @click="delete_candidate(candidate)">Delete</button>
+              <button class="btn btn-success" @click="interview()">Interview</button>
             </div>
           </div>
         </li>
@@ -106,7 +106,8 @@ export default {
       isEmployee:null,
       users: null,
       candidates: null,
-      employee_info: null
+      employee_info: null,
+      firstName:null
     }
   },
   created(){
@@ -158,13 +159,23 @@ export default {
     Job
   },
   methods:{
+    interview: function(candidate){
+      axios(`http://127.0.0.1:8081/users/create`, {
+        method: "get"
+      })
+      .then(response =>{
+        console.log(response);
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
+    },
     get_employee_info: function(user){
       console.log(user)
       axios(`http://127.0.0.1:8081/users/profile/${user["username"]}`, {
         method: "get"
       })
       .then(response =>{
-        console.log(response);
         this.employee_info = response["data"];
       })
       .catch(e => {
