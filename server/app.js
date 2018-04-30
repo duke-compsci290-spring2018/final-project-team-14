@@ -252,7 +252,14 @@ app.use((req, res, next) => {
 });
 
 // set up socket io
-var server = require('http').createServer(app);
+var fs = require('fs');
+
+var options = {
+  key: fs.readFileSync('/home/zx53/cerf/privkey.pem'),
+  cert: fs.readFileSync('/home/zx53/cerf/fullchain.pem')
+};
+
+var server = require('https').createServer(options);
 var io = require('socket.io')(server);
 
 var usernames = [];
