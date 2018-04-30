@@ -14,8 +14,9 @@ function isAuthenticated(req, res, next) {
 	}
 }
 
-function onInterviewChange(username){
-	sendEmail(username, 'Your interview information changed', 'Your interview event has been changed. Check it out now!');
+function onInterviewChange(username, url){
+	sendEmail(username, 'Your interview information changed', 'Your interview event has been changed. Check it out now!\nThe Link is '+url);
+
 }
 
 router.get('/test', function(req, res, next) {
@@ -149,7 +150,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 									console.log(emp);
 					        emp.save(function(err){
 					        	res.send(JSON.stringify({ success: true }));
-					        	onInterviewChange(username);
+					        	onInterviewChange(username, url);
 					        });
 						});
 					}
@@ -172,7 +173,7 @@ router.post('/interview', isAuthenticated, function(req, res,next) {
 								console.log(emp);
 				        emp.save(function(err){
 				        	res.send(JSON.stringify({ success: true }));
-				        	onInterviewChange(username)
+				        	onInterviewChange(username, url);
 						});
 				    });
 				}
