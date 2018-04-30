@@ -235,7 +235,6 @@ router.get("/search", function(req, res, next) {
 
 router.post('/candidate', isAuthenticated, function(req, res, next) {
     Employer.findOne({username: req.user.username}, function(err, emp){
-        //TODO: error handling
         console.log(err);
         for(var i=0; i<emp.employees.length; i++){
             if(emp.employees[i].username === req.body.username) {

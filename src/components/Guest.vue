@@ -29,7 +29,7 @@
 <script>
 import Job from "./Job.vue";
 import axios from 'axios';
-import config from '../config.js'
+import config from "../config.js"
 
 axios.defaults.withCredentials=true;
 export default {
