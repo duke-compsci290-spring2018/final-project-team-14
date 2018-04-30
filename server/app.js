@@ -56,9 +56,9 @@ User.findOne({username: ADMIN_EMAIL}, function(err, user){
         });
     }
 });
-
-var Profile = require("./models/profile");
 /*
+var Profile = require("./models/profile");
+
 var newProfile = new Profile({
     username: "null@gmail.com",
 
@@ -83,7 +83,7 @@ newProfile.save(function(err){
     if(err)
         console.log(err);
 });
-*/
+
 
 Profile.findOne({username: "5@gmail.com"}, function(err, data){
     if(!data){
@@ -179,7 +179,7 @@ newProfile.save(function(err){
 });
     }
 });
-
+*/
 
 
 // user authentication and session

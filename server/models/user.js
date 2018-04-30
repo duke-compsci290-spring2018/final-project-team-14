@@ -24,6 +24,9 @@ const UserSchema = new Schema({
     isAdmin: {
         type: Boolean
     },
+    color: {
+        type: String
+    },
     facebook_id: {
         type: String
     }

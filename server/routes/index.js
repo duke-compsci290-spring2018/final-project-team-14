@@ -53,6 +53,7 @@ router.post('/signup', function(req, res, next) {
         lastName: req.body.lastName,
         isEmployer: isEmployer,
         company: req.body.company,
+        color: 'white',
         isAdmin: false,
         facebook_id: req.body.facebook_id
     });
@@ -103,6 +104,20 @@ router.post('/signup', function(req, res, next) {
 
 router.get('/signup', function(req, res, next) {
 	res.render('signup', { title: 'Express' });
+});
+
+router.post('/color', isAuthenticated, function(req, res, next) {
+    User.findOne({username: req.user.username}, function(err, user){
+        user.color = req.body.color;
+        user.save(function(err){
+            if(err){
+                console.log(err);
+                res.send(JSON.stringify({ success: false }));
+            }else{
+                res.send(JSON.stringify({ success: true }));
+            }
+        });
+    });
 });
 
 router.get('/profile', isAuthenticated, function(req, res, next) {
