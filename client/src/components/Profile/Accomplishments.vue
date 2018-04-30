@@ -340,7 +340,7 @@
 
 			                    <div class="modal-footer">
 			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="editTest">Submit</button>
-			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="removeTest">Delete</button>
+			                        <button class="btn btn-outline-secondary" data-dismiss="modal" @click="removeTest(index)">Delete</button>
 			                    </div>
 
 			                </div>
@@ -395,7 +395,7 @@ export default {
   		};
   		this.accompData.projects.push(project);
   		this.trigger();
-  		this.clearProject;
+  		this.clearProject();
   	},
 
   	addLanguage() {
@@ -405,7 +405,7 @@ export default {
   		};
   		this.accompData.languages.push(language);
   		this.trigger();
-  		this.clearProject;
+  		this.clearLanguage();
   	},
 
   	addTest() {
@@ -415,7 +415,7 @@ export default {
   		};
   		this.accompData.tests.push(test);
   		this.trigger();
-  		this.clearProject;
+  		this.clearTest();
   	},
 
   	clearCourse() {
