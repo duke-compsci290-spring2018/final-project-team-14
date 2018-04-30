@@ -2,6 +2,15 @@
 <template>
   <div>
     <MainNav/>
+    <div class="form-group text-center mt-2">
+      <label for="color">Select Background Color</label>
+      <select class="form-control" v-model="color">
+        <option value = "blue">Blue</option>
+        <option value = "red">Red</option>
+        <option value = "Green">Green</option>
+        <option value = "White">White</option>
+      </select>
+    </div>
     <div class="mt-2" v-if='isEmployee'>
       <h4 class="text-center">My Interviews</h4>
         <ul>
@@ -150,7 +159,8 @@ export default {
       users: null,
       candidates: null,
       employee_info: null,
-      interviews: null
+      interviews: null,
+      color: null
 
     }
   },
@@ -177,6 +187,8 @@ export default {
         this.$router.push({ path: `/`});
       }
       else{
+        this.color = response["data"]["data"]["user"]["color"];
+        document.body.style.background = this.color;
         this.user_info = response["data"]["data"]["user"];
         this.isEmployee = response["data"]["data"]["user"]["isEmployer"] ? false: true;
 
@@ -199,6 +211,21 @@ export default {
     .catch(e => {
       this.errors.push(e);
     });
+  },
+  watch:{
+    color: function(){
+      axios(config.domain + ':8081/color', {
+        method: "post",
+        withCredentials: true,
+        data: {color: this.color}
+      })
+      .then(response => {
+        document.body.style.background = this.color;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
+    }
   },
   components:{
     MainNav,
